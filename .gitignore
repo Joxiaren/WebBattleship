@@ -1,0 +1,14 @@
+#webpack dist folder
+dist/*
+!dist/index.html
+!dist/favicon.ico
+
+#node stuff
+node_modules/
+
+#drawio working docs files
+*.drawio.bkp
+*.drawio.dtmp
+
+#idiot proof
+*.exe
