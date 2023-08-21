@@ -1,0 +1,16 @@
+:root{
+    --main-color: rgb(1, 105, 112);
+    --main-color-transparent: rgba(7, 212, 219, 0);
+    --back-color: rgb(6, 66, 63);
+    --light-color: rgb(0, 163, 155);
+    --transparent-color: rgba(0,0,0,0.7);
+    --transparent-color-hover: rgba(0,0,0,0.5);
+}
+main{
+    height: 100%;
+    width: 100%;
+    background-color: var(--back-color);
+    display: grid;
+    grid-template-rows: minmax(90px, 90px) 10fr minmax(60px, 60px);
+    grid-template-columns: minmax(100px, 150px) 1fr;
+}

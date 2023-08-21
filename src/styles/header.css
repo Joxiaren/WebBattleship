@@ -1,0 +1,11 @@
+header{    
+    background-color: var(--main-color);
+    
+    display: flex;
+    align-items: center;
+    color: white;
+    padding-left: 10%;
+    font-size: 3em;
+
+    grid-column: span 2;
+}
