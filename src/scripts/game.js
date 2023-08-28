@@ -2,8 +2,9 @@ import DOMManager from "./DOMManager";
 const DOMM = DOMManager.getManager();
 
 export default class Game{
-    constructor(players){
+    constructor(players, gameboards){
         this.players = players;
+        this.gameboards = gameboards;
         this.DOMElement = undefined;
     }
     setDOMElement(){

@@ -4,10 +4,11 @@ import DOMManager from "./DOMManager";
 const DOMM = DOMManager.getManager();
 
 export default class Ship{
-    constructor(size, position){
+    constructor(size, position, orientation){
         this.id = IDManager.getID();
         this.size = size;
         this.position = position;
+        this.orientation = orientation;
         this.health = size;
         this.DOMElement = undefined;
     }
