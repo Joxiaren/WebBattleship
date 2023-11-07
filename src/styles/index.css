@@ -12,5 +12,4 @@ main{
     background-color: var(--back-color);
     display: grid;
     grid-template-rows: minmax(90px, 90px) 10fr minmax(60px, 60px);
-    grid-template-columns: minmax(100px, 150px) 1fr;
 }

@@ -1,0 +1,16 @@
+.player-setup{
+    height: 50%;
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 10fr) repeat(2, 1fr);
+
+    color:white;
+}
+
+.player-setup-continue{
+    grid-column: span 2;
+}
+.player-setup-select-label{
+    grid-column: 2;
+}
