@@ -3,14 +3,36 @@
     width: 50%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 10fr) repeat(2, 1fr);
+    grid-template-rows: repeat(3, 5fr) repeat(2, 1fr);
 
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
     color:white;
 }
 
+.player-setup-label{
+    text-align: center;
+}
+.player-setup-input-holder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.player-setup-input-name{
+    margin: 5px;
+    padding: 5px;
+    font-size: 1em;
+    max-width: 60%;
+    text-align: center;
+}
 .player-setup-continue{
+    
     grid-column: span 2;
+    text-align: center;
 }
 .player-setup-select-label{
+    
     grid-column: 2;
+    text-align: center;
 }

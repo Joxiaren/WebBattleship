@@ -1,7 +1,10 @@
 import "../../styles/playerSetupPage.css";
 
+import FormGroup from "../formGroup";
+
 import DOMManager from "../DOMManager";
 const DOMM = DOMManager.getManager();
+
 
 export default class PlayerSetup{
     constructor(){
@@ -23,13 +26,17 @@ export default class PlayerSetup{
 
         this.player1Label = DOMM.createDOM('div', 'player-setup-label')
         DOMM.setTextContent(this.player1Label, "Enter player1 Name:");
-        this.player1Text = DOMM.createDOM('input');
+        this.textHolder1 = DOMM.createDOM('div', 'player-setup-input-holder');
+        this.player1Text = DOMM.createDOM('input', 'player-setup-input-name');
         DOMM.setAttribute(this.player1Text, 'type', 'text');
+        DOMM.addChild(this.textHolder1, this.player1Text);
 
         this.player2Label = DOMM.createDOM('div', 'player-setup-label');
         DOMM.setTextContent(this.player2Label, "Enter player2 Name:");
-        this.player2Text = DOMM.createDOM('input');
-        DOMM.setAttribute(this.player2Text, 'type', 'input');
+        this.textHolder2 = DOMM.createDOM('div', 'player-setup-input-holder');
+        this.player2Text = DOMM.createDOM('input', 'player-setup-input-name');
+        DOMM.setAttribute(this.player2Text, 'type', 'text');
+        DOMM.addChild(this.textHolder2, this.player2Text);
 
         this.player2SelectLabel = DOMM.createDOM('div', 'player-setup-select-label');
         DOMM.setTextContent(this.player2SelectLabel, "Select Player2");
@@ -58,8 +65,8 @@ export default class PlayerSetup{
 
         DOMM.addChild(this.DOMElement, this.player1Label);
         DOMM.addChild(this.DOMElement, this.player2Label);
-        DOMM.addChild(this.DOMElement, this.player1Text);
-        DOMM.addChild(this.DOMElement, this.player2Text);
+        DOMM.addChild(this.DOMElement, this.textHolder1);
+        DOMM.addChild(this.DOMElement, this.textHolder2);
         DOMM.addChild(this.DOMElement, this.player2SelectLabel);
         DOMM.addChild(this.DOMElement, this.player2Radio);
         DOMM.addChild(this.DOMElement, this.continueButton);
