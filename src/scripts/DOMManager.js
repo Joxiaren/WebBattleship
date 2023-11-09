@@ -46,6 +46,9 @@ export default class DOMManager{
     addChild(idParent, idChild){
         this.DOMList[idParent].appendChild(this.DOMList[idChild]);
     }
+    addClass(id, className){
+        this.DOMList[id].classList.add(className);
+    }
     addEvent(id, event, f){
         this.DOMList[id].addEventListener(`${event}`, f);
     }
@@ -57,6 +60,9 @@ export default class DOMManager{
         while(DOM.firstChild){
             DOM.removeChild(DOM.firstChild);
         }
+    }
+    removeClass(id, className){
+        this.DOMList[id].classList.remove(className);
     }
     query(id, q){
         return this.DOMList[id].querySelector(q);

@@ -1,6 +1,6 @@
 import "../../styles/playerSetupPage.css";
 
-import FormGroup from "../formGroup";
+import FormGroup, { RadioGroup } from "../formGroup";
 
 import DOMManager from "../DOMManager";
 const DOMM = DOMManager.getManager();
@@ -10,9 +10,8 @@ export default class PlayerSetup{
     constructor(){
         this.pageFunction = undefined;
 
-        this.player1 = undefined;
-        this.player2 = undefined;
-
+        this.player1NameGroup = undefined;
+        this.player2NameGroup = undefined;
 
         this.DOMElement = undefined;
         this.continueButton = undefined;
@@ -24,51 +23,31 @@ export default class PlayerSetup{
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'player-setup');   
 
-        this.player1Label = DOMM.createDOM('div', 'player-setup-label')
-        DOMM.setTextContent(this.player1Label, "Enter player1 Name:");
-        this.textHolder1 = DOMM.createDOM('div', 'player-setup-input-holder');
-        this.player1Text = DOMM.createDOM('input', 'player-setup-input-name');
-        DOMM.setAttribute(this.player1Text, 'type', 'text');
-        DOMM.addChild(this.textHolder1, this.player1Text);
 
-        this.player2Label = DOMM.createDOM('div', 'player-setup-label');
-        DOMM.setTextContent(this.player2Label, "Enter player2 Name:");
-        this.textHolder2 = DOMM.createDOM('div', 'player-setup-input-holder');
-        this.player2Text = DOMM.createDOM('input', 'player-setup-input-name');
-        DOMM.setAttribute(this.player2Text, 'type', 'text');
-        DOMM.addChild(this.textHolder2, this.player2Text);
+        this.player1NameGroup = new FormGroup('Enter Player1 Name:', 'text', 'player1-label', '');
+        this.player1NameGroup.setDOMElement();
+        this.player1NameGroup.setClassNameLabel('player-setup-label');
+        this.player1NameGroup.setClassNameInput('player-setup-input-name');
+
+        this.player2NameGroup = new FormGroup('Enter Player2 Name:', 'text', 'player2-label', '');
+        this.player2NameGroup.setDOMElement();
+        this.player2NameGroup.setClassNameLabel('player-setup-label');
+        this.player2NameGroup.setClassNameInput('player-setup-input-name');
 
         this.player2SelectLabel = DOMM.createDOM('div', 'player-setup-select-label');
         DOMM.setTextContent(this.player2SelectLabel, "Select Player2");
 
-        this.player2Radio = DOMM.createDOM('div', 'player-select-radio-container');
-        this.player2SelectHuman = DOMM.createDOM('input');
-        DOMM.setAttribute(this.player2SelectHuman, 'type', 'radio');
-        DOMM.setAttribute(this.player2SelectHuman, 'value', 'Human');
-        DOMM.setAttribute(this.player2SelectHuman, 'name', 'player2');
-        DOMM.setAttribute(this.player2SelectHuman, 'checked', 'checked');
-        this.player2SelectAIEasy = DOMM.createDOM('input');
-        DOMM.setAttribute(this.player2SelectAIEasy, 'type', 'radio');
-        DOMM.setAttribute(this.player2SelectAIEasy, 'value', 'AIEasy');
-        DOMM.setAttribute(this.player2SelectAIEasy, 'name', 'player2');
-        this.player2SelectAIHard = DOMM.createDOM('input');
-        DOMM.setAttribute(this.player2SelectAIHard, 'type', 'radio');
-        DOMM.setAttribute(this.player2SelectAIHard, 'value', 'AIHard');
-        DOMM.setAttribute(this.player2SelectAIHard, 'name', 'player2');
-        DOMM.addChild(this.player2Radio, this.player2SelectHuman);
-        DOMM.addChild(this.player2Radio, this.player2SelectAIEasy);
-        DOMM.addChild(this.player2Radio, this.player2SelectAIHard);
+        this.player2SelectGroup = new RadioGroup('player2Select', ['Human', 'AIEasy', 'AIHard'], ['Human', 'AIEasy', 'AIHard']);
+        this.player2SelectGroup.setDOMElement();
 
         this.continueButton = DOMM.createDOM('div', 'player-setup-continue')
         DOMM.setTextContent(this.continueButton, 'Continue Button');
 
 
-        DOMM.addChild(this.DOMElement, this.player1Label);
-        DOMM.addChild(this.DOMElement, this.player2Label);
-        DOMM.addChild(this.DOMElement, this.textHolder1);
-        DOMM.addChild(this.DOMElement, this.textHolder2);
+        DOMM.addChild(this.DOMElement, this.player1NameGroup.DOMElement);
+        DOMM.addChild(this.DOMElement, this.player2NameGroup.DOMElement);
         DOMM.addChild(this.DOMElement, this.player2SelectLabel);
-        DOMM.addChild(this.DOMElement, this.player2Radio);
+        DOMM.addChild(this.DOMElement, this.player2SelectGroup.DOMElement);
         DOMM.addChild(this.DOMElement, this.continueButton);
     }
 }
