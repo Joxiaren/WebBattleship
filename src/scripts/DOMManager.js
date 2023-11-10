@@ -15,7 +15,7 @@ export default class DOMManager{
 
     createDOM(tag, className, id){
         const newDom = document.createElement(`${tag}`);
-        if(className !== undefined) newDom.classList.add(className);
+        if(className) newDom.classList.add(className);
 
         newDom.id = (id === undefined ? `id${this.DOMCount}` : id); //
 

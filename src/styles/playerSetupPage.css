@@ -3,7 +3,7 @@
     width: 50%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 5fr) repeat(2, 1fr);
+    grid-template-rows: 2fr repeat(3, 1fr);
 
     justify-content: center;
     align-items: center;
@@ -16,7 +16,16 @@
     flex-direction: column;
     align-items: center;
 }
+.player-setup>.radio-group{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-column: 2;
 
+}
+.player-setup>.radio-group>input[type=radio]{
+    justify-self: end;
+}
 .player-setup-label{
     text-align: center;
 }
@@ -33,10 +42,17 @@
     text-align: center;
 }
 .player-setup-continue{
-    
     grid-column: span 2;
     text-align: center;
+    background-color: var(--light-color);
+
+    transition: all 0.15s;
 }
+.player-setup-continue:hover{
+    cursor: pointer;
+    background-color: blue;
+}
+
 .player-setup-select-label{
     
     grid-column: 2;

@@ -9,14 +9,18 @@ const DOMM = DOMManager.getManager();
 
 export default class PageContainer{
     constructor(){
-        this.pages = [new PlayerSetup(), new GameboardSetup(), new Game()];
+        this.pages = [];
         this.currentPage = undefined;
         this.DOMElement = undefined;
     }
-    initPages(){
-        this.pages.forEach(page => {
-            page.setPageFunction(this.setPage.bind(this));    
-        });
+     initPages(){
+        this.pages.push(new PlayerSetup(this.playerSetupContinueFunction.bind(this)));
+        this.pages.push(new GameboardSetup());
+        this.pages.push(new Game());
+    }
+    playerSetupContinueFunction(player1Name, player2Name, player2Type){
+        console.log(`Received Player names: ${player1Name} and ${player2Name} and player2 type: ${player2Type}`)
+        this.setPage(1);
     }
     setPage(pageNumber){
         this.currentPage = this.pages[pageNumber];

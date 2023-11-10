@@ -7,17 +7,18 @@ const DOMM = DOMManager.getManager();
 
 
 export default class PlayerSetup{
-    constructor(){
-        this.pageFunction = undefined;
+    constructor(continueFunction){
+        this.continueFunction = continueFunction;
 
         this.player1NameGroup = undefined;
         this.player2NameGroup = undefined;
+        this.player2SelectGroup = undefined;
 
         this.DOMElement = undefined;
         this.continueButton = undefined;
     }
-    setPageFunction(pageFunction){
-        this.pageFunction = pageFunction;
+    setClickFunction(player1Name, player2Name, player2Select){
+        return this.continueFunction(player1Name, player2Name, player2Select);
     }
     setDOMElement(){
         if(this.DOMElement !== undefined) return;
@@ -35,7 +36,7 @@ export default class PlayerSetup{
         this.player2NameGroup.setClassNameInput('player-setup-input-name');
 
         this.player2SelectLabel = DOMM.createDOM('div', 'player-setup-select-label');
-        DOMM.setTextContent(this.player2SelectLabel, "Select Player2");
+        DOMM.setTextContent(this.player2SelectLabel, "Select Player2 Type:");
 
         this.player2SelectGroup = new RadioGroup('player2Select', ['Human', 'AIEasy', 'AIHard'], ['Human', 'AIEasy', 'AIHard']);
         this.player2SelectGroup.setDOMElement();
@@ -49,5 +50,12 @@ export default class PlayerSetup{
         DOMM.addChild(this.DOMElement, this.player2SelectLabel);
         DOMM.addChild(this.DOMElement, this.player2SelectGroup.DOMElement);
         DOMM.addChild(this.DOMElement, this.continueButton);
+
+        this.setDOMEvents();
+    }
+    setDOMEvents(){
+        DOMM.addEvent(this.continueButton, 'click', () =>{
+            this.continueFunction(this.player1NameGroup.value, this.player2NameGroup.value, this.player2SelectGroup.selectedValue);
+        });
     }
 }

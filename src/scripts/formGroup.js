@@ -57,10 +57,10 @@ export class RadioGroup{
 
         for(let j = 0; j < this.labels.length; j++){
             this.labelElements.push(DOMM.createDOM('label'));
-            DOMM.setAttribute(this.labelElements[j], 'for', this.name);
+            DOMM.setAttribute(this.labelElements[j], 'for', `${this.name}${j}`);
             DOMM.setTextContent(this.labelElements[j], this.labels[j]);
 
-            this.radioElements.push(DOMM.createDOM('input'));
+            this.radioElements.push(DOMM.createDOM('input', '', `${this.name}${j}`));
             DOMM.setAttribute(this.radioElements[j], 'type', 'radio');
             DOMM.setAttribute(this.radioElements[j], 'name', this.name);
             DOMM.setAttribute(this.radioElements[j], 'value', this.values[j]);
@@ -70,8 +70,8 @@ export class RadioGroup{
                 }
                 console.log(this.selectedValue);
             }.bind(this))
-            DOMM.addChild(this.DOMElement, this.labelElements[j]);
             DOMM.addChild(this.DOMElement, this.radioElements[j]);
+            DOMM.addChild(this.DOMElement, this.labelElements[j]);
         }
     }
 }
