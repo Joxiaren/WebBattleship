@@ -14,7 +14,7 @@ export default class Ship{
     }
     setDOMElement(){
         if(this.DOMElement !== undefined) return;
-
+        this.DOMElement = DOMM.createDOM("div", "ship");
     }
     hit(){
         this.health -= 1;

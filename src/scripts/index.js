@@ -35,5 +35,5 @@ DOMM.addChild(main, footer.DOMElement);
 DOMM.addToBody(main);
 
 pageContainer.initPages();
-pageContainer.setPage(0);
+pageContainer.setPage(1);
 

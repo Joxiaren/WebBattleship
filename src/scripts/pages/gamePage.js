@@ -6,7 +6,6 @@ export default class Game{
         this.players = undefined;
         this.gameboards = undefined;
 
-        this.pageFunction = undefined;
         this.DOMElement = undefined;
     }
     setPlayers(players){
@@ -14,9 +13,6 @@ export default class Game{
     }
     setGameboards(gameboards){
         this.gameboards = gameboards;
-    }
-    setPageFunction(pageFunction){
-        this.pageFunction = pageFunction;
     }
     setDOMElement(){
         if(this.DOMElement !== undefined) return;

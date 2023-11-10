@@ -15,6 +15,12 @@ export default class Gameboard{
     }
     setDOMElement(){
         if(this.DOMElement !== undefined) return;
+        this.DOMElement = DOMM.createDOM('div', 'gameboard');
+
+        this.ships.forEach(ship => {
+            ship.setDOMElement();
+            DOMM.addChild(this.DOMElement, ship.DOMElement);
+        });
     }
     placeShip(size, position){
         let ship = new Ship(size, position)
