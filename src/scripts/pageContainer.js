@@ -16,13 +16,18 @@ export default class PageContainer{
     }
      initPages(){
         this.pages.push(new PlayerSetup(this.playerSetupContinueFunction.bind(this)));
-        this.pages.push(new GameboardSetup());
+        this.pages.push(new GameboardSetup(this.gameboardSetupContinueFunction.bind(this)));
         this.pages.push(new Game());
     }
     playerSetupContinueFunction(player1Name, player2Name, player2Type){
-        console.log(`Received Player names: ${player1Name} and ${player2Name} and player2 type: ${player2Type}`)
-        this.pages[2].setPlayers([new Player(player1Name), new Player(player2Name)]) // change to player type;
+        console.log(`Received Player names: ${player1Name} and ${player2Name} and player2 type: ${player2Type}`);
+        this.pages[2].setPlayers([new Player(player1Name), new Player(player2Name)]); // change to player type;
         this.setPage(1);
+    }
+    gameboardSetupContinueFunction(gameboard1, gameboard2){
+        console.log(`Received Gameboards: ${gameboard1} and ${gameboard2}`);
+        this.pages[2].setGameboards(gameboard1, gameboard2);
+        this.setPage(2);
     }
     setPage(pageNumber){
         this.currentPage = this.pages[pageNumber];

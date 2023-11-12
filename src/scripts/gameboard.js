@@ -12,15 +12,46 @@ export default class Gameboard{
         this.destroyed = 0;
         this.hitPositions = [];
         this.DOMElement = undefined;
+        this.gameboard = undefined;
+        this.cells = [];
+        this.emptyMarking = undefined;
+        this.markings = [];
     }
     setDOMElement(){
         if(this.DOMElement !== undefined) return;
-        this.DOMElement = DOMM.createDOM('div', 'gameboard');
+        this.DOMElement = DOMM.createDOM('div', 'gameboard-container');
+        this.gameboard = DOMM.createDOM('div', 'gameboard');
 
+        for(let i = 0; i < 10; i++){
+            for(let j = 0; j < 10; j++){
+                this.cells.push(DOMM.createDOM('div', 'gameboard-cell'));
+                DOMM.addChild(this.gameboard, this.cells[this.cells.length - 1]);
+            }
+        }
         this.ships.forEach(ship => {
             ship.setDOMElement();
-            DOMM.addChild(this.DOMElement, ship.DOMElement);
+            DOMM.addChild(this.gameboard, ship.DOMElement);
         });
+        DOMM.addChild(this.DOMElement, this.gameboard);
+
+        this.emptyMarking = DOMM.createDOM('div', 'gameboard-marking');
+        DOMM.addChild(this.DOMElement, this.emptyMarking);
+
+
+        let markingCreater = function(mark){
+            let tempDOM = DOMM.createDOM('div', 'gameboard-marking');
+            DOMM.setTextContent(tempDOM, mark);
+            this.markings.push[tempDOM];
+            DOMM.addChild(this.DOMElement, tempDOM);
+        }.bind(this);
+
+        for(let i = 0; i < 10; i++){
+            markingCreater(`${i+1}`);
+        }
+        for(let i = 0; i < 10; i++){
+            markingCreater(String.fromCharCode('A'.charCodeAt() + i));
+        }
+
     }
     placeShip(size, position){
         let ship = new Ship(size, position)

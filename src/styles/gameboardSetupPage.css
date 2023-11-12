@@ -1,3 +1,26 @@
 .gameboard-setup{
+    height: 100%;
+    width: 100%;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.gameboard-setup-continue{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 10px;
+    margin-left: 100%;
+    margin-right: 100%;
+    grid-column: span 2;
+
+    background-color: var(--light-color);
+
+    transition: all 0.15s;
+}
+.gameboard-setup-continue:hover{
+    background-color: blue;
 }
