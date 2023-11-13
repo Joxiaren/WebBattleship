@@ -31,6 +31,9 @@ export default class DOMManager{
     setAttribute(id, attribute, value){
         this.DOMList[id].setAttribute(attribute, value);
     }
+    setStyle(id, styleAttribute, styleValue){
+        this.DOMList[id].style[styleAttribute] = styleValue;
+    }
     readAttribute(id , attribute){
         return this.DOMList[id].getAttribute(attribute);
     }
@@ -49,8 +52,8 @@ export default class DOMManager{
     addClass(id, className){
         this.DOMList[id].classList.add(className);
     }
-    addEvent(id, event, f){
-        this.DOMList[id].addEventListener(`${event}`, f);
+    addEvent(id, event, f, capture=true){
+        this.DOMList[id].addEventListener(`${event}`, f, capture);
     }
     removeChild(idParent, idChild){
         this.DOMList[idParent].removeChild(this.DOMList[idChild]);

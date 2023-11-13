@@ -1,0 +1,12 @@
+.ship{
+    display: flex;
+    border: 1px solid blue;
+    background-color: var(--ship-color);
+    user-select: none;
+    cursor: grab;
+}
+
+.ship-part{
+    width: 35px;
+    height: 35px;
+}

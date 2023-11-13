@@ -2,6 +2,7 @@ import PlayerSetup from './pages/playerSetupPage';
 import GameboardSetup from './pages/gameboardSetupPage';
 import Game from './pages/gamePage';
 import Player from './player';
+import ShipSet from './shipSet';
 
 import '../styles/pageContainer.css';
 
@@ -12,6 +13,12 @@ export default class PageContainer{
     constructor(){
         this.pages = [];
         this.currentPage = undefined;
+        
+        this.gameboard1 = undefined;
+        this.gameboard2 = undefined;
+        this.shipSet1 = new ShipSet();
+        this.shipSet2 = new ShipSet();
+
         this.DOMElement = undefined;
     }
      initPages(){
