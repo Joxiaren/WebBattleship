@@ -20,6 +20,8 @@ export default class GameboardSetup{
         this.mousePosX = null;
         this.mousePosY = null;
 
+        this.selectedCell = null;
+
         this.DOMElement = undefined;
         this.shipContainer = undefined;
         this.continueButton = undefined;
@@ -53,22 +55,51 @@ export default class GameboardSetup{
         DOMM.addEvent(this.continueButton, 'click', () =>{
             this.continueFunction(gm1, gm2);
         });
-
-        DOMM.addEvent(this.DOMElement, 'mousemove', this.onMouseMove.bind(this));
+        DOMM.addEvent(this.DOMElement, 'wheel', this.onMouseWheel.bind(this));
     }
     setMovableShip(ship, mousePosX, mousePosY){
-        console.log(`movable ${this.movableShip} = ${ship}`);
+        if(ship){
+            DOMM.addEvent(this.DOMElement, 'mousemove', this.onMouseMove.bind(this));
+            DOMM.addEvent(this.DOMElement, 'mouseup', this.onMouseUp.bind(this));
+            console.log('added events');
+        } 
+        else {
+            DOMM.removeEvent(this.DOMElement, 'mousemove', this.onMouseMove.bind(this));
+            DOMM.removeEvent(this.DOMElement, 'mouseup', this.onMouseUp.bind(this));
+            console.log('remove events');
+        }
         this.movableShip = ship;
-        console.log(`this.movableShip is now ${this.movableShip}`);
+        console.log(ship);
         this.mousePosX = mousePosX;
         this.mousePosY = mousePosY;
     }
     onMouseMove(e){
         if(!this.movableShip) return;
-        console.log('mouse is moving ' + this.movableShip);
-        console.log('mouse is moving' + `${this.movableShip.id}`);
-        this.movableShip.style.top = `${e.clientY + this.mousePosY}px`;
-        this.movableShip.style.left = `${e.clientX + this.mousePosX}px`;
-        console.log('mouse movedi inside container');
+        this.updateShipPosition(e);
+    }
+    onMouseUp(e){
+        if(!this.movableShip) return;
+        console.log('mouse is released ' + `${this.movableShip.id}`);
+        DOMM.setStyle(this.movableShip.DOMElement, 'position', 'static');
+        DOMM.setStyle(this.movableShip.DOMElement, 'pointerEvents', 'auto');
+        this.setMovableShip(null, 0, 0);
+    }
+    onMouseWheel(e){
+        if(!this.movableShip) return;
+        if(e.deltaY > 0) {
+            console.log('scroll down');
+            this.movableShip.orientation += 1;
+        }
+        else{
+            console.log('scroll up');  
+            this.movableShip.orientation -= 1;
+        } 
+        [this.mousePosX, this.mousePosY] = [this.mousePosY, this.mousePosX];
+        this.updateShipPosition(e);
+
+    }
+    updateShipPosition(e){
+        DOMM.setStyle(this.movableShip.DOMElement, 'top', `${e.clientY + this.mousePosY}px`);
+        DOMM.setStyle(this.movableShip.DOMElement, 'left', `${e.clientX + this.mousePosX}px`);
     }
 }

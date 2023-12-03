@@ -13,6 +13,7 @@ export default class Gameboard{
         this.hitPositions = [];
         this.DOMElement = undefined;
         this.gameboard = undefined;
+        this.shipContainer = undefined;
         this.cells = [];
         this.emptyMarking = undefined;
         this.markings = [];
@@ -21,11 +22,20 @@ export default class Gameboard{
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'gameboard-container');
         this.gameboard = DOMM.createDOM('div', 'gameboard');
+        this.shipContainer = DOMM.createDOM('div', 'gameboard-ship-container');
 
         for(let i = 0; i < 10; i++){
             for(let j = 0; j < 10; j++){
                 this.cells.push(DOMM.createDOM('div', 'gameboard-cell'));
                 DOMM.addChild(this.gameboard, this.cells[this.cells.length - 1]);
+                DOMM.addEvent(this.cells[this.cells.length - 1], 'mouseenter',(e)=>{
+                    console.log('mouse overed');
+                    e.target.style.backgroundColor = 'orange';
+                });
+                DOMM.addEvent(this.cells[this.cells.length - 1], 'mouseout',(e)=>{
+                    console.log('mouse outed');
+                    e.target.style.backgroundColor = '';
+                });
             }
         }
         this.ships.forEach(ship => {
@@ -36,7 +46,6 @@ export default class Gameboard{
 
         this.emptyMarking = DOMM.createDOM('div', 'gameboard-marking');
         DOMM.addChild(this.DOMElement, this.emptyMarking);
-
 
         let markingCreater = function(mark){
             let tempDOM = DOMM.createDOM('div', 'gameboard-marking');
@@ -53,8 +62,11 @@ export default class Gameboard{
         }
 
     }
-    placeShip(size, position){
-        let ship = new Ship(size, position)
+    updateDOMElement(){
+
+    }
+    placeShip(ship, position){
+        ship.position = position;
         this.ships.push(ship);
     }
     receiveFire(position){

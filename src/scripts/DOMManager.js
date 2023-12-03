@@ -67,6 +67,9 @@ export default class DOMManager{
     removeClass(id, className){
         this.DOMList[id].classList.remove(className);
     }
+    removeEvent(id, event, f, capture=true){
+        this.DOMList[id].removeEventListener(`${event}`, f, capture);
+    }
     query(id, q){
         return this.DOMList[id].querySelector(q);
     }

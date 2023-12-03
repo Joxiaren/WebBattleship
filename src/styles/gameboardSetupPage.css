@@ -9,8 +9,8 @@
 
 .gameboard-ship-container{
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(5, minmax(150px, 1fr));
+    grid-template-rows: repeat(2, minmax(35px, 1fr));
 }
 
 .gameboard-setup-continue{

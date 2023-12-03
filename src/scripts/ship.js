@@ -9,10 +9,26 @@ export default class Ship{
         this.id = IDManager.getID(this);
         this.size = size;
         this.position = undefined;
-        this.orientation = orientation.North;
+        this._orientation = orientation.North;
         this.health = size;
         this.DOMElement = undefined;
         this.shipParts = undefined;
+    }
+    get orientation() { return this._orientation}
+    set orientation(orient){
+        if(orient == -1) orient = 3;
+        orient %= 4;
+        console.log(orient);
+        this._orientation = orient;
+        if(!this.DOMElement) return;
+        if(this._orientation == orientation.East || this._orientation == orientation.West){
+            DOMM.setStyle(this.DOMElement, 'height', `35px`);
+            DOMM.setStyle(this.DOMElement, 'width', `${this.size * 35}px`);
+        }
+        else{
+            DOMM.setStyle(this.DOMElement, 'width', `35px`);
+            DOMM.setStyle(this.DOMElement, 'height', `${this.size * 35}px`);
+        }
     }
     setDOMElement(setMoveFunction){
         if(this.DOMElement !== undefined) return;
@@ -26,7 +42,7 @@ export default class Ship{
         this.setDOMEvents(setMoveFunction);
     }
     setDOMEvents(setMoveFunction){
-
+        let thisShip = this;
         DOMM.addEvent(this.DOMElement, 'mousedown', function(e){
             console.log('mouse is down ' + `${this.id}`);
             let elementPosX = this.getBoundingClientRect().left; 
@@ -37,28 +53,18 @@ export default class Ship{
             this.style.top = `${e.clientY + mousePosY}px`;
             this.style.left = `${e.clientX + mousePosX}px`;
             this.style.position = 'absolute';
+            this.style.pointerEvents = 'none';
 
-            setMoveFunction(this, mousePosX, mousePosY);
+            setMoveFunction(thisShip, mousePosX, mousePosY);
         });
-        DOMM.addEvent(this.DOMElement, 'mouseup', function(e){
-            console.log('mouse is released ' + `${this.id}`);
-            this.style.position = 'static';
-            
-            setMoveFunction(null, 0, 0);
-        });
-        //DOMM.addEvent(this.DOMElement, 'mousemove', onMouseMove);
-    }
-    rotate(orient){
-        this.orientation = orient;
-        if(this.orientation == orientation.East || this.orientation == orientation.West){
-            DOMM.setStyle(this.DOMElement, 'height', `35px`);
-            DOMM.setStyle(this.DOMElement, 'width', `${this.size * 35}px`);
-        }
     }
     hit(){
         this.health -= 1;
     }
     isSunk(){
         return this.health <= 0;
+    }
+    report(){
+        console.log('ytes i am ship');
     }
 }

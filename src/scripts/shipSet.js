@@ -18,7 +18,7 @@ export default class ShipSet{
     setDOMElement(setMoveFunction){
         this.ships.forEach(ship =>{
             ship.setDOMElement(setMoveFunction);
-            ship.rotate(orientation.East);
+            ship.orientation = orientation.North;
         })
     }
 }
