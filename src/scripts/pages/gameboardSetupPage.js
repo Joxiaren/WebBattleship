@@ -31,7 +31,6 @@ export default class GameboardSetup{
         this.DOMElement = DOMM.createDOM('div', 'gameboard-setup');
         
         this.gameboard1.setDOMElement();
-        this.gameboard2.setDOMElement();
         
         this.shipContainer = DOMM.createDOM('div', 'gameboard-ship-container');
         this.shipSet1.setDOMElement(this.setMovableShip.bind(this));
@@ -44,7 +43,6 @@ export default class GameboardSetup{
 
         DOMM.addChild(this.DOMElement, this.shipContainer);
         DOMM.addChild(this.DOMElement, this.gameboard1.DOMElement);
-        //DOMM.addChild(this.DOMElement, this.gameboard2.DOMElement);
         DOMM.addChild(this.DOMElement, this.continueButton);
 
         this.setDOMEvents();
