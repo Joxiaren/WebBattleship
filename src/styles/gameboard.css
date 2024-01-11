@@ -1,7 +1,7 @@
 .gameboard-container{
     display: grid;
-    grid-template-columns: repeat(11, 35px);
-    grid-template-rows: repeat(11, 35px);
+    grid-template-columns: repeat(11, 37px);
+    grid-template-rows: repeat(11, 37px);
 }
 
 .gameboard{
@@ -9,8 +9,8 @@
     grid-row: 2 / span 10;
 
     display: grid;
-    grid-template-columns: repeat(10, 35px);
-    grid-template-rows: repeat(10, 35px);
+    grid-template-columns: repeat(10, 37px);
+    grid-template-rows: repeat(10, 37px);
 
     border: 0.5px solid red;
 }

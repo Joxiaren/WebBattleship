@@ -4,9 +4,12 @@
     background-color: var(--ship-color);
     user-select: none;
     cursor: grab;
+    z-index: 20;
 }
 
 .ship-part{
+    position: static;
     width: 35px;
     height: 35px;
+    z-index: 21;
 }

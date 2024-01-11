@@ -30,7 +30,7 @@ export default class GameboardSetup{
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'gameboard-setup');
         
-        this.gameboard1.setDOMElement();
+        this.gameboard1.setDOMElement(this.cellCB.bind(this));
         
         this.shipContainer = DOMM.createDOM('div', 'gameboard-ship-container');
         this.shipSet1.setDOMElement(this.setMovableShip.bind(this));
@@ -55,16 +55,18 @@ export default class GameboardSetup{
         });
         DOMM.addEvent(this.DOMElement, 'wheel', this.onMouseWheel.bind(this));
     }
+    cellCB(cell){
+        this.selectedCell = cell;
+    }
     setMovableShip(ship, mousePosX, mousePosY){
         if(ship){
             DOMM.addEvent(this.DOMElement, 'mousemove', this.onMouseMove.bind(this));
             DOMM.addEvent(this.DOMElement, 'mouseup', this.onMouseUp.bind(this));
-            console.log('added events');
+            this.gameboard1.removeShip(ship);   
         } 
         else {
             DOMM.removeEvent(this.DOMElement, 'mousemove', this.onMouseMove.bind(this));
             DOMM.removeEvent(this.DOMElement, 'mouseup', this.onMouseUp.bind(this));
-            console.log('remove events');
         }
         this.movableShip = ship;
         console.log(ship);
@@ -77,7 +79,13 @@ export default class GameboardSetup{
     }
     onMouseUp(e){
         if(!this.movableShip) return;
-        console.log('mouse is released ' + `${this.movableShip.id}`);
+        if(this.selectedCell){
+            this.gameboard1.placeShip(this.movableShip, this.selectedCell);
+        }
+        else{
+            DOMM.addChild(this.shipContainer, this.movableShip.DOMElement);
+            this.gameboard1.removeShip(this.movableShip);
+        }
         DOMM.setStyle(this.movableShip.DOMElement, 'position', 'static');
         DOMM.setStyle(this.movableShip.DOMElement, 'pointerEvents', 'auto');
         this.setMovableShip(null, 0, 0);
@@ -85,11 +93,9 @@ export default class GameboardSetup{
     onMouseWheel(e){
         if(!this.movableShip) return;
         if(e.deltaY > 0) {
-            console.log('scroll down');
             this.movableShip.orientation += 1;
         }
         else{
-            console.log('scroll up');  
             this.movableShip.orientation -= 1;
         } 
         [this.mousePosX, this.mousePosY] = [this.mousePosY, this.mousePosX];

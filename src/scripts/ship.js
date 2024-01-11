@@ -24,10 +24,12 @@ export default class Ship{
         if(this._orientation == orientation.East || this._orientation == orientation.West){
             DOMM.setStyle(this.DOMElement, 'height', `35px`);
             DOMM.setStyle(this.DOMElement, 'width', `${this.size * 35}px`);
+            DOMM.setStyle(this.DOMElement, 'flexDirection', 'row');
         }
         else{
             DOMM.setStyle(this.DOMElement, 'width', `35px`);
             DOMM.setStyle(this.DOMElement, 'height', `${this.size * 35}px`);
+            DOMM.setStyle(this.DOMElement, 'flexDirection', 'column');
         }
     }
     setDOMElement(setMoveFunction){
@@ -44,7 +46,6 @@ export default class Ship{
     setDOMEvents(setMoveFunction){
         let thisShip = this;
         DOMM.addEvent(this.DOMElement, 'mousedown', function(e){
-            console.log('mouse is down ' + `${this.id}`);
             let elementPosX = this.getBoundingClientRect().left; 
             let elementPosY = this.getBoundingClientRect().top;
             let mousePosX =  elementPosX - e.clientX;
@@ -65,6 +66,6 @@ export default class Ship{
         return this.health <= 0;
     }
     report(){
-        console.log('ytes i am ship');
+        console.log('yes i am ship');
     }
 }
