@@ -6,7 +6,10 @@ import ShipSet from './shipSet';
 
 import '../styles/pageContainer.css';
 
+import '../enums/playerType';
+
 import DOMManager from "./DOMManager";
+import playerType from '../enums/playerType';
 const DOMM = DOMManager.getManager();
 
 export default class PageContainer{
@@ -28,12 +31,16 @@ export default class PageContainer{
     }
     playerSetupContinueFunction(player1Name, player2Name, player2Type){
         console.log(`Received Player names: ${player1Name} and ${player2Name} and player2 type: ${player2Type}`);
-        this.pages[2].setPlayers([new Player(player1Name), new Player(player2Name)]); // change to player type;
+        let p2t;
+        
+        this.pages[1].setPlayers([new Player(player1Name, playerType.Human), new Player(player2Name, playerType[player2Type])]);
+        this.pages[2].setPlayers([new Player(player1Name, playerType.Human), new Player(player2Name, playerType[player2Type])]); // change to player type;
         this.setPage(1);
     }
     gameboardSetupContinueFunction(gameboard1, gameboard2){
         console.log(`Received Gameboards: ${gameboard1} and ${gameboard2}`);
-        this.pages[2].setGameboards(gameboard1, gameboard2);
+        console.log(gameboard1);
+        this.pages[2].setGameboards([gameboard1, gameboard2]);
         this.setPage(2);
     }
     setPage(pageNumber){

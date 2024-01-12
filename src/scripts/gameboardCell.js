@@ -7,10 +7,10 @@ export default class GameboardCell{
         this.disabled = 0;
         this.DOMElement = undefined;
     }
-    setDOMElement(cellCB){
+    setDOMElement(cellCBEnter, cellCBOut){
         this.DOMElement = DOMM.createDOM('div', 'gameboard-cell');
-        DOMM.addEvent(this.DOMElement, 'mouseenter', this.generateMouseEnter(cellCB).bind(this));
-        DOMM.addEvent(this.DOMElement, 'mouseout', this.generateMouseOut(cellCB).bind(this));
+        DOMM.addEvent(this.DOMElement, 'mouseenter', this.generateMouseEnter(cellCBEnter).bind(this));
+        DOMM.addEvent(this.DOMElement, 'mouseout', this.generateMouseOut(cellCBOut).bind(this));
     }
     generateMouseEnter(cellCB){
         return function(e){
@@ -24,8 +24,9 @@ export default class GameboardCell{
         return function(e){
             if(this.disabled) return;
             if(e.target !== e.currentTarget) return;
+            e.target.style.backgroundColor = '';
             e.preventDefault();
-            cellCB(null);
+            cellCB(this.position);
         }.bind(this);
     }
 }

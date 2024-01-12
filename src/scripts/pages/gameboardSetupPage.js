@@ -16,6 +16,9 @@ export default class GameboardSetup{
         this.shipSet1 = new ShipSet();
         this.shipSet2 = new ShipSet();
 
+        this.player1 = null;
+        this.player2 = null;
+
         this.movableShip = null;
         this.mousePosX = null;
         this.mousePosY = null;
@@ -26,6 +29,7 @@ export default class GameboardSetup{
         this.shipContainer = undefined;
         this.continueButton = undefined;
     }
+
     setDOMElement(){
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'gameboard-setup');
@@ -48,16 +52,23 @@ export default class GameboardSetup{
         this.setDOMEvents();
     }
     setDOMEvents(){
-        let gm1 = this.gameboard1;
-        let gm2 = this.gameboard2;
         DOMM.addEvent(this.continueButton, 'click', () =>{
-            this.continueFunction(gm1, gm2);
+            if(Object.keys(this.gameboard1.ships).length === 10 && Object.keys(this.gameboard2.ships).length === 10) this.continueFunction(this.gameboard1, this.gameboard2);
+            else alert('Please place all the ships on the gameboard');
+
         });
         DOMM.addEvent(this.DOMElement, 'wheel', this.onMouseWheel.bind(this));
     }
+
+
     cellCB(cell){
         this.selectedCell = cell;
     }
+    setPlayers(players){
+        this.player1 = players[0];
+        this.player2 = players[1]; 
+    }
+
     setMovableShip(ship, mousePosX, mousePosY){
         if(ship){
             DOMM.addEvent(this.DOMElement, 'mousemove', this.onMouseMove.bind(this));
@@ -69,6 +80,8 @@ export default class GameboardSetup{
             DOMM.removeEvent(this.DOMElement, 'mouseup', this.onMouseUp.bind(this));
         }
         this.movableShip = ship;
+        this.gameboard1.setMovableShip(ship);
+
         console.log(ship);
         this.mousePosX = mousePosX;
         this.mousePosY = mousePosY;
@@ -79,7 +92,7 @@ export default class GameboardSetup{
     }
     onMouseUp(e){
         if(!this.movableShip) return;
-        if(this.selectedCell){
+        if(this.selectedCell && this.gameboard1.validPlace(this.movableShip, this.selectedCell)){
             this.gameboard1.placeShip(this.movableShip, this.selectedCell);
         }
         else{
@@ -89,6 +102,7 @@ export default class GameboardSetup{
         DOMM.setStyle(this.movableShip.DOMElement, 'position', 'static');
         DOMM.setStyle(this.movableShip.DOMElement, 'pointerEvents', 'auto');
         this.setMovableShip(null, 0, 0);
+        this.gameboard1.setMovableShip(null);
     }
     onMouseWheel(e){
         if(!this.movableShip) return;

@@ -17,7 +17,8 @@ export default class Game{
     setDOMElement(){
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'game');
-        DOMM.setTextContent(this.DOMElement, "Game Setup");
+        this.gameboards[0].setDOMElement();
+        DOMM.addChild(this.DOMElement, this.gameboards[0].DOMElement);
     }
 
 }

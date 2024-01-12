@@ -22,21 +22,21 @@ export default class Ship{
         this._orientation = orient;
         if(!this.DOMElement) return;
         if(this._orientation == orientation.East || this._orientation == orientation.West){
-            DOMM.setStyle(this.DOMElement, 'height', `35px`);
-            DOMM.setStyle(this.DOMElement, 'width', `${this.size * 35}px`);
+            DOMM.setStyle(this.DOMElement, 'height', `33px`);
+            DOMM.setStyle(this.DOMElement, 'width', `${this.size * 33}px`);
             DOMM.setStyle(this.DOMElement, 'flexDirection', 'row');
         }
         else{
-            DOMM.setStyle(this.DOMElement, 'width', `35px`);
-            DOMM.setStyle(this.DOMElement, 'height', `${this.size * 35}px`);
+            DOMM.setStyle(this.DOMElement, 'width', `33px`);
+            DOMM.setStyle(this.DOMElement, 'height', `${this.size * 33}px`);
             DOMM.setStyle(this.DOMElement, 'flexDirection', 'column');
         }
     }
     setDOMElement(setMoveFunction){
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM("div", "ship");
-        DOMM.setStyle(this.DOMElement, 'height', `${this.size * 35}px`);
-        DOMM.setStyle(this.DOMElement, 'width', `35px`);
+        DOMM.setStyle(this.DOMElement, 'height', `${this.size * 33}px`);
+        DOMM.setStyle(this.DOMElement, 'width', `33px`);
         for(let i = 0; i < this.size; i++){
             let tempDOM = DOMM.createDOM('div', 'ship-part');
             DOMM.addChild(this.DOMElement, tempDOM);
