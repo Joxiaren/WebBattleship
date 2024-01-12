@@ -6,7 +6,7 @@
     --transparent-color: rgba(0,0,0,0.7);
     --transparent-color-hover: rgba(0,0,0,0.5);
 
-    --ship-color: rgb(100, 100, 100);
+    --ship-color: rgb(150, 150, 150);
 }
 main{
     height: 100%;
