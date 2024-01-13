@@ -4,9 +4,8 @@ import '../styles/index.css';
 import Header from './header';
 import Footer from './footer';
 
-// import Player from './player';
-// import Gameboard from './gameboard';
-// import Game from './game';
+import playerType from '../enums/playerType';
+import Player from './player';
 import PageContainer from './pageContainer';
 
 import DOMManager from './DOMManager';
@@ -17,12 +16,6 @@ const header = new Header('Welcome To Joxi Battleship');
 
 const pageContainer = new PageContainer();
 pageContainer.initPages();
-// const player1 = new Player("Mirko");
-// const player2 = new Player("Marko");
-// const gameboard1 = new Gameboard();
-// const gameboard2 = new Gameboard();
-
-// const game = new Game([player1, player2], [gameboard1, gameboard2]);
 
 const footer = new Footer('Made By Joxi©');
 header.setDOMElement();
@@ -35,5 +28,6 @@ DOMM.addChild(main, footer.DOMElement);
 DOMM.addToBody(main);
 
 pageContainer.initPages();
+pageContainer.pages[1].setPlayers([new Player('Joxi', playerType.Human), new Player('Poxi', playerType.Human)])
 pageContainer.setPage(1);
 

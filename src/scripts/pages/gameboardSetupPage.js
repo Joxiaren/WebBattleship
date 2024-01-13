@@ -4,20 +4,52 @@ import Gameboard from "../gameboard";
 import ShipSet from '../shipSet';
 
 import DOMManager from "../DOMManager";
+import playerType from '../../enums/playerType';
 const DOMM = DOMManager.getManager();
 
-export default class GameboardSetup{
+export default class GameboardSetupPage{
+    constructor(continueFunction){
+        this.gameboardSetup = undefined;
+        this.cf = continueFunction;
+
+        this.i = 0;
+        this.gameboards = [new Gameboard(), new Gameboard()];
+        this.shipSets = [new ShipSet(), new ShipSet()];
+        this.players = undefined;
+        
+        this.DOMElement = undefined;
+    }
+    setDOMElement(){
+        this.DOMElement = DOMM.createDOM('div', 'gameboard-setup-page');
+
+        this.gameboardSetup = new GameboardSetup(this.continueFunction.bind(this));
+        this.gameboardSetupping();
+        DOMM.addChild(this.DOMElement, this.gameboardSetup.DOMElement);
+    }
+    setPlayers(players){
+        this.players = players;
+    }
+    gameboardSetupping(){
+        this.gameboardSetup.setShipSet(this.shipSets[this.i]);
+        this.gameboardSetup.setGameboard(this.gameboards[this.i]);
+        this.gameboardSetup.setDOMElement();
+        this.i++;
+    }
+    continueFunction(){
+        if(this.i >= 2){
+            //delete this.gameboardSetup
+            this.cf(this.gameboards);
+        }
+        this.gameboardSetupping();
+    }
+}
+class GameboardSetup{
     constructor(continueFunction){
         this.continueFunction = continueFunction;
 
-        this.gameboard1 = new Gameboard();
-        this.gameboard2 = new Gameboard();
-
-        this.shipSet1 = new ShipSet();
-        this.shipSet2 = new ShipSet();
-
-        this.player1 = null;
-        this.player2 = null;
+        this.setupableGameboard = undefined;
+        this.shipSet = undefined;
+        this.playerType = undefined;
 
         this.movableShip = null;
         this.mousePosX = null;
@@ -31,14 +63,18 @@ export default class GameboardSetup{
     }
 
     setDOMElement(){
+        if(this.playerType !== playerType.Human){
+            //ai placement logic
+            this.continueCB();
+        }
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'gameboard-setup');
         
-        this.gameboard1.setDOMElement(this.cellCB.bind(this));
+        this.setupableGameboard.setDOMElement(this.cellCB.bind(this));
         
         this.shipContainer = DOMM.createDOM('div', 'gameboard-ship-container');
-        this.shipSet1.setDOMElement(this.setMovableShip.bind(this));
-        this.shipSet1.ships.forEach(ship =>{
+        this.shipSet.setDOMElement(this.setMovableShip.bind(this));
+        this.shipSet.ships.forEach(ship =>{
             DOMM.addChild(this.shipContainer, ship.DOMElement);
         })
 
@@ -46,41 +82,42 @@ export default class GameboardSetup{
         DOMM.setTextContent(this.continueButton, 'Continue');
 
         DOMM.addChild(this.DOMElement, this.shipContainer);
-        DOMM.addChild(this.DOMElement, this.gameboard1.DOMElement);
+        DOMM.addChild(this.DOMElement, this.setupableGameboard.DOMElement);
         DOMM.addChild(this.DOMElement, this.continueButton);
 
         this.setDOMEvents();
     }
     setDOMEvents(){
-        DOMM.addEvent(this.continueButton, 'click', () =>{
-            if(Object.keys(this.gameboard1.ships).length === 10 && Object.keys(this.gameboard2.ships).length === 10) this.continueFunction(this.gameboard1, this.gameboard2);
-            else alert('Please place all the ships on the gameboard');
-
-        });
+        DOMM.addEvent(this.continueButton, 'click', this.continueCB.bind(this));
         DOMM.addEvent(this.DOMElement, 'wheel', this.onMouseWheel.bind(this));
     }
 
-
+    continueCB(){
+        if(Object.keys(this.setupableGameboard.ships).length === 10) this.continueFunction();
+        else alert('Please place all the ships on the gameboard');
+    }
     cellCB(cell){
         this.selectedCell = cell;
     }
-    setPlayers(players){
-        this.player1 = players[0];
-        this.player2 = players[1]; 
+    setShipSet(shipSet){
+        this.shipSet = shipSet;
+    }
+    setGameboard(gameboard){
+        this.setupableGameboard = gameboard;
     }
 
     setMovableShip(ship, mousePosX, mousePosY){
         if(ship){
             DOMM.addEvent(this.DOMElement, 'mousemove', this.onMouseMove.bind(this));
             DOMM.addEvent(this.DOMElement, 'mouseup', this.onMouseUp.bind(this));
-            this.gameboard1.removeShip(ship);   
+            this.setupableGameboard.removeShip(ship);   
         } 
         else {
             DOMM.removeEvent(this.DOMElement, 'mousemove', this.onMouseMove.bind(this));
             DOMM.removeEvent(this.DOMElement, 'mouseup', this.onMouseUp.bind(this));
         }
         this.movableShip = ship;
-        this.gameboard1.setMovableShip(ship);
+        this.setupableGameboard.setMovableShip(ship);
 
         console.log(ship);
         this.mousePosX = mousePosX;
@@ -92,17 +129,17 @@ export default class GameboardSetup{
     }
     onMouseUp(e){
         if(!this.movableShip) return;
-        if(this.selectedCell && this.gameboard1.validPlace(this.movableShip, this.selectedCell)){
-            this.gameboard1.placeShip(this.movableShip, this.selectedCell);
+        if(this.selectedCell && this.setupableGameboard.validPlace(this.movableShip, this.selectedCell)){
+            this.setupableGameboard.placeShip(this.movableShip, this.selectedCell);
         }
         else{
             DOMM.addChild(this.shipContainer, this.movableShip.DOMElement);
-            this.gameboard1.removeShip(this.movableShip);
+            this.setupableGameboard.removeShip(this.movableShip);
         }
         DOMM.setStyle(this.movableShip.DOMElement, 'position', 'static');
         DOMM.setStyle(this.movableShip.DOMElement, 'pointerEvents', 'auto');
         this.setMovableShip(null, 0, 0);
-        this.gameboard1.setMovableShip(null);
+        this.setupableGameboard.setMovableShip(null);
     }
     onMouseWheel(e){
         if(!this.movableShip) return;
