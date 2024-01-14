@@ -5,6 +5,7 @@ import ShipSet from '../shipSet';
 
 import DOMManager from "../DOMManager";
 import playerType from '../../enums/playerType';
+import orientation from '../../enums/orientation';
 const DOMM = DOMManager.getManager();
 
 export default class GameboardSetupPage{
@@ -19,12 +20,15 @@ export default class GameboardSetupPage{
         
         this.DOMElement = undefined;
     }
+    increaseI(){
+        this.i++;
+        console.log(`increased i to ${this.i}`);
+    }
     setDOMElement(){
         this.DOMElement = DOMM.createDOM('div', 'gameboard-setup-page');
 
         this.gameboardSetup = new GameboardSetup(this.continueFunction.bind(this));
         this.gameboardSetupping();
-        DOMM.addChild(this.DOMElement, this.gameboardSetup.DOMElement);
     }
     setPlayers(players){
         this.players = players;
@@ -32,15 +36,28 @@ export default class GameboardSetupPage{
     gameboardSetupping(){
         this.gameboardSetup.setShipSet(this.shipSets[this.i]);
         this.gameboardSetup.setGameboard(this.gameboards[this.i]);
-        this.gameboardSetup.setDOMElement();
-        this.i++;
+        console.log(this.players);
+        this.gameboardSetup.setPlayerType(this.players[this.i].playerType);
+        let AI = this.gameboardSetup.setDOMElement();
+        this.increaseI();
+        if(AI){
+            this.continueFunction();
+        }
+        else{
+            DOMM.addChild(this.DOMElement, this.gameboardSetup.DOMElement);
+        }
     }
     continueFunction(){
-        if(this.i >= 2){
+        DOMM.removeAllChildren(this.DOMElement);
+        this.gameboardSetup.DOMElement = undefined;
+        console.log(this.i);
+        if(this.i === 2){
             //delete this.gameboardSetup
             this.cf(this.gameboards);
         }
-        this.gameboardSetupping();
+        else{
+            this.gameboardSetupping();
+        }
     }
 }
 class GameboardSetup{
@@ -63,14 +80,15 @@ class GameboardSetup{
     }
 
     setDOMElement(){
-        if(this.playerType !== playerType.Human){
-            //ai placement logic
-            this.continueCB();
+        let AI = false;
+        this.setupableGameboard.setDOMElement(this.cellCB.bind(this));
+        console.log(`player type: ${this.playerType}`);
+        if(this.playerType !== 'Human'){
+            this.shipSet.ships.forEach((ship) => this.setupableGameboard.randomPlace(ship));
+            AI = true;
         }
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'gameboard-setup');
-        
-        this.setupableGameboard.setDOMElement(this.cellCB.bind(this));
         
         this.shipContainer = DOMM.createDOM('div', 'gameboard-ship-container');
         this.shipSet.setDOMElement(this.setMovableShip.bind(this));
@@ -86,6 +104,10 @@ class GameboardSetup{
         DOMM.addChild(this.DOMElement, this.continueButton);
 
         this.setDOMEvents();
+        return AI;
+    }
+    removeDOMElement(){
+        DOMM.removeAllChildren(this.DOMElement);
     }
     setDOMEvents(){
         DOMM.addEvent(this.continueButton, 'click', this.continueCB.bind(this));
@@ -93,7 +115,10 @@ class GameboardSetup{
     }
 
     continueCB(){
-        if(Object.keys(this.setupableGameboard.ships).length === 10) this.continueFunction();
+        if(Object.keys(this.setupableGameboard.ships).length === 10) {
+            this.removeDOMElement();
+            this.continueFunction();
+        }
         else alert('Please place all the ships on the gameboard');
     }
     cellCB(cell){
@@ -104,6 +129,9 @@ class GameboardSetup{
     }
     setGameboard(gameboard){
         this.setupableGameboard = gameboard;
+    }
+    setPlayerType(playerType){
+        this.playerType = playerType;
     }
 
     setMovableShip(ship, mousePosX, mousePosY){
@@ -119,7 +147,6 @@ class GameboardSetup{
         this.movableShip = ship;
         this.setupableGameboard.setMovableShip(ship);
 
-        console.log(ship);
         this.mousePosX = mousePosX;
         this.mousePosY = mousePosY;
     }

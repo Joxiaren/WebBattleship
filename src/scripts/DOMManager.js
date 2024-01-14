@@ -57,9 +57,11 @@ export default class DOMManager{
     }
     removeChild(idParent, idChild){
         this.DOMList[idParent].removeChild(this.DOMList[idChild]);
+        this.removeDOM(idChild);
     }
     removeAllChildren(idParent){
         const DOM = this.DOMList[idParent];
+        if(!DOM) return;
         while(DOM.firstChild){
             DOM.removeChild(DOM.firstChild);
         }

@@ -3,4 +3,4 @@ export default {
     East: 1,
     South: 2,
     West: 3
-};
+}; 

@@ -4,7 +4,6 @@ import '../styles/index.css';
 import Header from './header';
 import Footer from './footer';
 
-import playerType from '../enums/playerType';
 import Player from './player';
 import PageContainer from './pageContainer';
 
@@ -28,6 +27,6 @@ DOMM.addChild(main, footer.DOMElement);
 DOMM.addToBody(main);
 
 pageContainer.initPages();
-pageContainer.pages[1].setPlayers([new Player('Joxi', playerType.Human), new Player('Poxi', playerType.Human)])
-pageContainer.setPage(1);
+pageContainer.pages[1].setPlayers([new Player('Joxi', 'Human'), new Player('Poxi', 'AIHard')])
+pageContainer.setPage(0);
 

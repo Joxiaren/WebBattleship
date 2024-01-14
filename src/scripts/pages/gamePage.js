@@ -18,7 +18,11 @@ export default class Game{
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'game');
         this.gameboards[0].setDOMElement();
+        this.gameboards[1].setDOMElement();
+        this.gameboards[0].updateDOMElement();
+        this.gameboards[1].updateDOMElement();
         DOMM.addChild(this.DOMElement, this.gameboards[0].DOMElement);
+        DOMM.addChild(this.DOMElement, this.gameboards[1].DOMElement);
     }
 
 }

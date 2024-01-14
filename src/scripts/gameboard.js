@@ -16,6 +16,7 @@ export default class Gameboard {
         this.DOMElement = undefined;
         this.gameboard = undefined;
         this.cells = [];
+        this.availableCells = new Set();
         this.emptyMarking = undefined;
         this.markings = [];
         this.movableShip = null;
@@ -58,6 +59,7 @@ export default class Gameboard {
                 let gameboardCell = new GameboardCell([i, j]);
                 gameboardCell.setDOMElement(cellCBEnter, cellCBOut);
                 this.cells.push(gameboardCell);
+                this.availableCells.add(i * 10 + j);
                 DOMM.addChild(this.gameboard, gameboardCell.DOMElement);
             }
         }
@@ -79,19 +81,15 @@ export default class Gameboard {
         for (let i = 0; i < 10; i++) {
             markingCreater(String.fromCharCode('A'.charCodeAt() + i));
         }
-
+        this.updateDOMElement();
     }
     updateDOMElement() {
+        console.log('updating gameboard dom element');
         for (const [shipID, ship] of Object.entries(this.ships)) {
             ship.setDOMElement();
-
-            console.log('this is part of gameboard:');
-            console.log(ship);
             let row = ship.size;
             let column = 1;
             if (ship._orientation == orientation.North || ship._orientation == orientation.South) [row, column] = [column, row];
-            console.log(row);
-            console.log(column);
             DOMM.addChild(this.cells[ship.position[0] * 10 + ship.position[1]].DOMElement, ship.DOMElement);
         }
     }
@@ -122,10 +120,28 @@ export default class Gameboard {
         for (let i = ship.position[0] - 1; i <= ship.position[0] + column; i++) {
             for (let j = ship.position[1] - 1; j <= ship.position[1] + row; j++) {
                 let index = i * 10 + j;
-                if (i >= 0 && i < 10 && j >= 0 && j < 10) this.cells[index].disabled += 1;
+                if (i >= 0 && i < 10 && j >= 0 && j < 10) {
+                    this.cells[index].disabled += 1;
+                    this.availableCells.delete(index);
+                }
             }
         }
         this.updateDOMElement();
+    }
+    randomPlace(ship){
+        ship.orientation = Math.floor(Math.random() * 4);
+        for(const validCell of this.availableCells){
+            let i = parseInt(validCell / 10);
+            let j = parseInt(validCell % 10);
+            if(this.validPlace(ship, [i,j])){
+                console.log(`placed ${ship} oriented ${ship.orientation} on ${i}, ${j}`);
+                this.placeShip(ship, [i,j]);
+                return;
+            }
+        }
+        console.log(ship);
+        console.log(this.gameboard);
+        alert('Could not place the ship on the board');
     }
     removeShip(ship) {
         if (!ship) return;
@@ -136,7 +152,10 @@ export default class Gameboard {
         for (let i = ship.position[0] - 1; i <= ship.position[0] + column; i++) {
             for (let j = ship.position[1] - 1; j <= ship.position[1] + row; j++) {
                 let index = i * 10 + j;
-                if (i >= 0 && i < 10 && j >= 0 && j < 10) this.cells[index].disabled -= 1;
+                if (i >= 0 && i < 10 && j >= 0 && j < 10) {
+                    this.cells[index].disabled -= 1;
+                    this.availableCells.add(index);
+                }
             }
         }
         delete this.ships[ship.id];
