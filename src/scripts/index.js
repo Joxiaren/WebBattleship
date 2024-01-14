@@ -28,5 +28,5 @@ DOMM.addToBody(main);
 
 pageContainer.initPages();
 pageContainer.pages[1].setPlayers([new Player('Joxi', 'Human'), new Player('Poxi', 'AIHard')])
-pageContainer.setPage(0);
+pageContainer.setPage(1);
 
