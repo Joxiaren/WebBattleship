@@ -17,9 +17,6 @@ export default class PlayerSetup{
         this.DOMElement = undefined;
         this.continueButton = undefined;
     }
-    setClickFunction(player1Name, player2Name, player2Select){
-        return this.continueFunction(player1Name, player2Name, player2Select);
-    }
     setDOMElement(){
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'player-setup');   
@@ -42,7 +39,7 @@ export default class PlayerSetup{
         this.player2SelectGroup.setDOMElement();
 
         this.continueButton = DOMM.createDOM('div', 'player-setup-continue')
-        DOMM.setTextContent(this.continueButton, 'Continue Button');
+        DOMM.setTextContent(this.continueButton, 'Continue');
 
 
         DOMM.addChild(this.DOMElement, this.player1NameGroup.DOMElement);

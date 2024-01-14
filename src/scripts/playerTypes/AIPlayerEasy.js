@@ -2,7 +2,15 @@ import DOMManager from '../DOMManager.js';
 const DOMM = DOMManager.getManager();
 
 export default class AIPlayerEasy{
-    constructor(player){
-        this.player = player;
+    static AIE = undefined;
+
+    static create(){
+        AIPlayerEasy.AIE = new AIPlayerEasy();
+    }
+    static getSingleton(){
+        if(AIPlayerEasy.AIE === undefined){
+            this.create();
+        }
+        return AIPlayerEasy.AIE;
     }
 }

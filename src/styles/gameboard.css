@@ -1,0 +1,27 @@
+.gameboard-container{
+    display: grid;
+    grid-template-columns: repeat(11, 35px);
+    grid-template-rows: repeat(11, 35px);
+}
+
+.gameboard{
+    grid-column: 2 / span 10;
+    grid-row: 2 / span 10;
+
+    display: grid;
+    grid-template-columns: repeat(10, 35px);
+    grid-template-rows: repeat(10, 35px);
+
+    border: 0.5px solid red;
+}
+.gameboard-cell{
+    border:0.5px solid red;
+}
+.gameboard-marking{
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    user-select: none;
+}

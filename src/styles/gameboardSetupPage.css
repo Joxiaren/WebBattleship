@@ -1,0 +1,42 @@
+.gameboard-setup-page{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.gameboard-setup{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.gameboard-ship-container{
+    display: grid;
+    grid-template-columns: repeat(5, minmax(150px, 1fr));
+    grid-template-rows: repeat(2, minmax(35px, 1fr));
+}
+
+.gameboard-setup-continue{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 10px;
+    margin-left: 100%;
+    margin-right: 100%;
+    grid-column: span 2;
+    font-size: 1.5em;
+    border: 2px solid var(--light-color);
+    background-color: var(--main-color);
+    user-select: none;
+
+    transition: all 0.15s;
+}
+.gameboard-setup-continue:hover{
+    cursor: pointer;
+    background-color: var(--light-color);
+}

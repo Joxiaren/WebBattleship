@@ -6,7 +6,6 @@ export default class Game{
         this.players = undefined;
         this.gameboards = undefined;
 
-        this.pageFunction = undefined;
         this.DOMElement = undefined;
     }
     setPlayers(players){
@@ -15,13 +14,15 @@ export default class Game{
     setGameboards(gameboards){
         this.gameboards = gameboards;
     }
-    setPageFunction(pageFunction){
-        this.pageFunction = pageFunction;
-    }
     setDOMElement(){
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'game');
-        DOMM.setTextContent(this.DOMElement, "Game Setup");
+        this.gameboards[0].setDOMElement();
+        this.gameboards[1].setDOMElement();
+        this.gameboards[0].updateDOMElement();
+        this.gameboards[1].updateDOMElement();
+        DOMM.addChild(this.DOMElement, this.gameboards[0].DOMElement);
+        DOMM.addChild(this.DOMElement, this.gameboards[1].DOMElement);
     }
 
 }

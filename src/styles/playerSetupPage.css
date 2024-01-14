@@ -44,13 +44,13 @@
 .player-setup-continue{
     grid-column: span 2;
     text-align: center;
-    background-color: var(--light-color);
+    background-color: var(--main-color);
 
     transition: all 0.15s;
 }
 .player-setup-continue:hover{
     cursor: pointer;
-    background-color: blue;
+    background-color: var(--light-color);
 }
 
 .player-setup-select-label{
