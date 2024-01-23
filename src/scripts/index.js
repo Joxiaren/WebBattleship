@@ -14,7 +14,6 @@ const main = DOMM.createDOM('main');
 const header = new Header('Welcome To Joxi Battleship');
 
 const pageContainer = new PageContainer();
-pageContainer.initPages();
 
 const footer = new Footer('Made By Joxi©');
 header.setDOMElement();
@@ -27,6 +26,10 @@ DOMM.addChild(main, footer.DOMElement);
 DOMM.addToBody(main);
 
 pageContainer.initPages();
-pageContainer.pages[1].setPlayers([new Player('Joxi', 'Human'), new Player('Poxi', 'AIHard')])
-pageContainer.setPage(1);
 
+
+let hardcodedPlayer1 = new Player('Joxi', 'Human');
+let hardcodedPlayer2 = new Player('Poxi', 'AIEasy');
+pageContainer.pages[1].setPlayers([hardcodedPlayer1, hardcodedPlayer2]);
+pageContainer.pages[2].setPlayers([hardcodedPlayer1, hardcodedPlayer2]);
+pageContainer.setPage(1);

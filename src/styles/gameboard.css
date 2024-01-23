@@ -25,3 +25,34 @@
 
     user-select: none;
 }
+.gameboard-crosshair{
+    pointer-events: none;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    z-index: 5;
+    background-image: url('../../icons/crossair_black.png');
+    background-size: 100% auto;
+
+    /*#FF0000*/
+    filter: brightness(0) saturate(100%) invert(29%) sepia(90%) saturate(7456%) hue-rotate(356deg) brightness(97%) contrast(122%)
+}
+
+.gameboard-x{
+    pointer-events: none;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    z-index: 5;
+    background-image: url('../../icons/x_black.png');
+    background-size: 100% auto;
+}
+
+.hit{
+    /*#FF0000*/
+    filter: brightness(0) saturate(100%) invert(29%) sepia(90%) saturate(7456%) hue-rotate(356deg) brightness(97%) contrast(122%)
+}
+.miss{
+    /*#FFFF00*/
+    filter: brightness(0) saturate(100%) invert(94%) sepia(81%) saturate(5722%) hue-rotate(358deg) brightness(107%) contrast(102%);
+}

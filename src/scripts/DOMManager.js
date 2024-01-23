@@ -15,8 +15,12 @@ export default class DOMManager{
 
     createDOM(tag, className, id){
         const newDom = document.createElement(`${tag}`);
-        if(className) newDom.classList.add(className);
-
+        if(className){
+            className = className.split(' ');
+            className.forEach(classN => {
+                newDom.classList.add(classN);
+            });
+        } 
         newDom.id = (id === undefined ? `id${this.DOMCount}` : id); //
 
         this.DOMList[newDom.id] = newDom;
@@ -55,9 +59,9 @@ export default class DOMManager{
     addEvent(id, event, f, capture=true){
         this.DOMList[id].addEventListener(`${event}`, f, capture);
     }
-    removeChild(idParent, idChild){
+    removeChild(idParent, idChild, del=true){
         this.DOMList[idParent].removeChild(this.DOMList[idChild]);
-        this.removeDOM(idChild);
+        if(del) this.removeDOM(idChild);
     }
     removeAllChildren(idParent){
         const DOM = this.DOMList[idParent];

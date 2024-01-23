@@ -1,15 +1,18 @@
 .ship{
+    pointer-events: none;
+    position: absolute;
     display: flex;
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     background-color: var(--ship-color);
     user-select: none;
     cursor: grab;
-    z-index: 20;
+    z-index: 1;
 }
 
 .ship-part{
-    position: static;
-    width: 33px;
-    height: 33px;
-    z-index: 21;
+    pointer-events: none;
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    z-index: 1;
 }

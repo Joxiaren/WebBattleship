@@ -4,8 +4,12 @@ import Gameboard from "../gameboard";
 import ShipSet from '../shipSet';
 
 import DOMManager from "../DOMManager";
+
+import shuffleArray from '../shuffle';
+
 import playerType from '../../enums/playerType';
 import orientation from '../../enums/orientation';
+
 const DOMM = DOMManager.getManager();
 
 export default class GameboardSetupPage{
@@ -20,12 +24,10 @@ export default class GameboardSetupPage{
         
         this.DOMElement = undefined;
     }
-    increaseI(){
-        this.i++;
-        console.log(`increased i to ${this.i}`);
-    }
     setDOMElement(){
         this.DOMElement = DOMM.createDOM('div', 'gameboard-setup-page');
+
+        this.playerNameLabel = DOMM.createDOM('div', 'gameboard-name');
 
         this.gameboardSetup = new GameboardSetup(this.continueFunction.bind(this));
         this.gameboardSetupping();
@@ -36,10 +38,11 @@ export default class GameboardSetupPage{
     gameboardSetupping(){
         this.gameboardSetup.setShipSet(this.shipSets[this.i]);
         this.gameboardSetup.setGameboard(this.gameboards[this.i]);
-        console.log(this.players);
-        this.gameboardSetup.setPlayerType(this.players[this.i].playerType);
+        this.gameboardSetup.setPlayer(this.players[this.i]);
+        DOMM.setTextContent(this.playerNameLabel, `${this.players[this.i].name}, please setup your board`);
+        DOMM.addChild(this.DOMElement, this.playerNameLabel);
         let AI = this.gameboardSetup.setDOMElement();
-        this.increaseI();
+        this.i++;
         if(AI){
             this.continueFunction();
         }
@@ -50,7 +53,6 @@ export default class GameboardSetupPage{
     continueFunction(){
         DOMM.removeAllChildren(this.DOMElement);
         this.gameboardSetup.DOMElement = undefined;
-        console.log(this.i);
         if(this.i === 2){
             //delete this.gameboardSetup
             this.cf(this.gameboards);
@@ -66,6 +68,7 @@ class GameboardSetup{
 
         this.setupableGameboard = undefined;
         this.shipSet = undefined;
+        this.playerName = undefined;
         this.playerType = undefined;
 
         this.movableShip = null;
@@ -76,14 +79,15 @@ class GameboardSetup{
 
         this.DOMElement = undefined;
         this.shipContainer = undefined;
+        this.playerNameLabel = undefined;
         this.continueButton = undefined;
     }
 
     setDOMElement(){
         let AI = false;
         this.setupableGameboard.setDOMElement(this.cellCB.bind(this));
-        console.log(`player type: ${this.playerType}`);
-        if(this.playerType !== 'Human'){
+        if(this.playerType !== 'Human' || true){ //TEMP FOR TESTING
+            shuffleArray(this.shipSet.ships, 3);
             this.shipSet.ships.forEach((ship) => this.setupableGameboard.randomPlace(ship));
             AI = true;
         }
@@ -130,8 +134,9 @@ class GameboardSetup{
     setGameboard(gameboard){
         this.setupableGameboard = gameboard;
     }
-    setPlayerType(playerType){
-        this.playerType = playerType;
+    setPlayer(player){
+        this.playerName = player.name;
+        this.playerType = player.playerType;
     }
 
     setMovableShip(ship, mousePosX, mousePosY){
@@ -163,7 +168,9 @@ class GameboardSetup{
             DOMM.addChild(this.shipContainer, this.movableShip.DOMElement);
             this.setupableGameboard.removeShip(this.movableShip);
         }
-        DOMM.setStyle(this.movableShip.DOMElement, 'position', 'static');
+        DOMM.setStyle(this.movableShip.DOMElement, 'top', `0px`);
+        DOMM.setStyle(this.movableShip.DOMElement, 'left', `0px`);
+        DOMM.setStyle(this.movableShip.DOMElement, 'position', 'relative');
         DOMM.setStyle(this.movableShip.DOMElement, 'pointerEvents', 'auto');
         this.setMovableShip(null, 0, 0);
         this.setupableGameboard.setMovableShip(null);
