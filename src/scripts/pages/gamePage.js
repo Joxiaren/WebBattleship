@@ -1,10 +1,13 @@
 import DOMManager from "../DOMManager";
 import playerType from "../../enums/playerType";
 import '../../styles/gamePage.css';
+import hitReport from "../../enums/hitReport";
+import TransitionScreen from "../transitionScreen";
+import VictoryScreen from "../victoryScreen";
 const DOMM = DOMManager.getManager();
 
 export default class GamePage{
-    constructor(){
+    constructor(rematchCB, startOverCB){
         this.players = undefined;
         this.gameboards = undefined;
 
@@ -13,6 +16,10 @@ export default class GamePage{
         this.DOMElement = undefined;
         this.pvp = false;
         this.currentTurn = 0;
+        
+        this.rematchCB = rematchCB;
+        this.startOverCB = startOverCB;
+        
         this.onMouseDownBinded = this.onMouseDown.bind(this);
     }
     setPlayers(players){
@@ -61,50 +68,57 @@ export default class GamePage{
         DOMM.addChild(this.gameboardContainer2, this.player2Label);
         DOMM.addChild(this.gameboardContainer2, this.gameboards[1].DOMElement);
 
-        this.gameboards[1].hideAllShips();
+        if(this.pvp){
+            this.gameboards[1].hideAllShips();
+        }
+        else{
+            for(let i = 0; i < this.players.length; i++){
+                if(this.players[i].playerType !== 'Human') this.gameboards[i].hideAllShips();
+            }
+        }
 
         DOMM.addChild(this.DOMElement, this.gameboardContainer1);
         DOMM.addChild(this.DOMElement, this.gameboardContainer2);
 
         this.gameLoop();
     }
-    setDOMEvents(){
-        DOMM.addEvent(this.DOMElement, 'click', this.onMouseDownBinded);
-    }
-    removeDOMEvents(){
-        DOMM.removeEvent(this.DOMElement, 'click', this.onMouseDownBinded);
+    removeDOMElement(){
+        DOMM.removeAllChildren(this.DOMElement);
+        DOMM.removeDOM(this.DOMElement);
     }
     onMouseDown(){
-        console.log('clicked');
-        console.log(this.players[this.currentTurn].playerType);
         if(this.players[this.currentTurn].playerType !== 'Human') return null;
         let report;
         if(this.selectedCell[1]){ 
             if(this.selectedCell[0] === this.currentTurn) return null;
-            console.log(`FIRE AT: ${this.selectedCell}`);
             report = this.gameboards[this.selectedCell[0]].receiveFire(this.selectedCell[1]);
-
-            //this.handleTurn();
         }
         return report;
     }
     async handleTurn(){
         let report;
         if(this.players[this.currentTurn].playerType === 'Human'){
-            console.log('Human Turn');
             report = await this.humanTurn(this).then((value)=>value);
-            console.log(`report is: ${report}`);
         }
         else{
-            let AI = playerType[this.players[this.currentTurn].playerType];
-            report = AI.fire(this.gameboards[(this.currentTurn + 1) % 2]);
-            console.log(`report is: ${report}`);
-            //this.handleTurn();
+            report = await this.AITurn(this).then((r)=>r);
         }
-        
-        if(this.pvp) this.gameboards[this.currentTurn].hideAllShips();
-        if(report === 0) this.currentTurn = (this.currentTurn + 1) % 2;
-        if(this.pvp) this.gameboards[this.currentTurn].uncoverAllShips();
+        if(report === 0){
+            if(this.pvp) this.gameboards[this.currentTurn].hideAllShips();
+            if(this.pvp) await this.humanTransition(this);
+            this.currentTurn = (this.currentTurn + 1) % 2;
+            if(this.pvp) this.gameboards[this.currentTurn].uncoverAllShips();
+        }
+        return report;
+    }
+    AITurn(gamePage){
+        return new Promise((resolve)=>{
+            setTimeout(()=>{
+                let AI = playerType[this.players[this.currentTurn].playerType];
+                let r = AI.fire(this.gameboards[(this.currentTurn + 1) % 2]);
+                resolve(r)
+            }, 1200);
+        });
     }
     humanTurn(gamePage){
         return new Promise((resolve)=>{
@@ -117,12 +131,56 @@ export default class GamePage{
             }
             DOMM.addEvent(gamePage.DOMElement, 'click', listener);
         })
-        return;
     }
+    humanTransition(gamePage){
+        let transitionWindow = new TransitionScreen(`Ready player ${gamePage.players[(gamePage.currentTurn + 1) % 2].name}`);
+        transitionWindow.setDOMElement();
+        return new Promise((resolve)=>{
+            const listener = () => {
+                transitionWindow.removeDOMElement();
+                resolve();
+            }
+            transitionWindow.setDOMEvents(listener);
+            DOMM.addChild(gamePage.DOMElement, transitionWindow.DOMElement);
+        })
+    }
+    popUp(text, time){
+        let popWindow = DOMM.createDOM('div', 'popup-window');
+        DOMM.setTextContent(popWindow, text);
+        DOMM.addChild(this.DOMElement, popWindow);
+        //wait
+
+        setTimeout(()=> {DOMM.removeChild(this.DOMElement, popWindow);}, time);
+    }
+    
     async gameLoop(){
+        let report;
+        let popupTime = 2400;
         while(true){
-            await this.handleTurn();
+            report = await this.handleTurn();
+            if(report === hitReport.Miss){
+                this.popUp(`Player ${this.players[(this.currentTurn + 1) % 2].name} missed`, popupTime);
+                console.log(`Player ${this.players[(this.currentTurn + 1) % 2].name} missed`);
+            }
+            else if(report === hitReport.Hit){
+                this.popUp(`Player ${this.players[this.currentTurn].name} hit a ship`, popupTime);
+                console.log(`Player ${this.players[this.currentTurn].name} hit a ship`);
+            }
+            else if(report === hitReport.Sunk){
+                this.popUp(`Player ${this.players[this.currentTurn].name} sunk a ship`, popupTime);
+                console.log(`Player ${this.players[this.currentTurn].name} sunk a ship`);
+            }
+            else if(report === hitReport.Won){
+                this.popUp(`Player ${this.players[this.currentTurn].name} has won!!!`, popupTime);
+                console.log(`Player ${this.players[this.currentTurn].name} has won!!!`);
+                break;
+            }
         }
+        //victory screen
+        let victoryScreen = new VictoryScreen(this.players[this.currentTurn].name);
+        victoryScreen.setDOMElement();
+        victoryScreen.setDOMEvents(this.rematchCB, this.startOverCB);
+        DOMM.addChild(this.DOMElement, victoryScreen.DOMElement);
     }
 
 }

@@ -77,11 +77,11 @@ export default class Gameboard {
         }.bind(this);
         let cellCBOut = function(cell){
             let index = cell[0] * 10 + cell[1];
+            DOMM.setStyle(this.cells[index].DOMElement, 'backgroundColor', '');
             if(this.movableShip){
                 let step = this.movableShip._orientation === orientation.North || this.movableShip === orientation.South ? 10 : 1;
                 for(let i = index; i < index + step * this.movableShip.size; i+=step){
                     if(i > 99 || i < 0) continue;
-                    DOMM.setStyle(this.cells[index].DOMElement, 'backgroundColor', '');
                 }
             }
             else{
@@ -100,9 +100,8 @@ export default class Gameboard {
     updateDOMElement() {
         for (const [shipID, ship] of Object.entries(this.ships)) {
             ship.setDOMElement();
-            let row = ship.size;
-            let column = 1;
-            if (ship._orientation == orientation.North || ship._orientation == orientation.South) [row, column] = [column, row];
+            DOMM.setStyle(ship.DOMElement, 'pointer-events', 'none');
+            DOMM.setStyle(ship.DOMElement, 'position', 'absolute');
             DOMM.addChild(this.cells[ship.position[0] * 10 + ship.position[1]].DOMElement, ship.DOMElement);
         }
     }
@@ -156,7 +155,7 @@ export default class Gameboard {
                 this.shipCells[index] = ship.id;
             }
         }
-        this.updateDOMElement();
+        if(ship.DOMElement) DOMM.addChild(this.cells[ship.position[0] * 10 + ship.position[1]].DOMElement, ship.DOMElement);
     }
     randomPlace(ship){
         while(true){
@@ -195,7 +194,6 @@ export default class Gameboard {
             }
         }
         delete this.ships[ship.id];
-        this.updateDOMElement();
     }
     hideShip(ship){
         if(ship.isSunk()) return;
@@ -225,16 +223,18 @@ export default class Gameboard {
 
         this.cells[index].disabled += 1;
         this.availableCells.delete(index);
+        DOMM.removeChild(this.cells[index].DOMElement, this.crosshairElement, false);
         
         let report = hitReport.Miss;
         let xClass = 'miss';
+
         if(this.shipCells[index]) {
-            console.log('HIT');
             report = hitReport.Hit;
             let ship = this.ships[this.shipCells[index]];
             ship.hit();
+            xClass = 'hit';
+
             if(ship.isSunk()) {
-                console.log('SUNK');
                 report = hitReport.Sunk;
                 this.destroyed += 1;
 
@@ -250,23 +250,21 @@ export default class Gameboard {
                 }
 
                 this.uncoverShip(ship);
-                this.isGameOver();
+                if(this.isGameOver()) report = hitReport.Won;
             }
-            xClass = 'hit';
-            this.receiveFire([position[0] + 1, position[1] + 1]);
-            this.receiveFire([position[0] + 1, position[1] - 1]);
-            this.receiveFire([position[0] - 1, position[1] + 1]);
-            this.receiveFire([position[0] - 1, position[1] - 1]);
+            else{
+                this.receiveFire([position[0] + 1, position[1] + 1]);
+                this.receiveFire([position[0] + 1, position[1] - 1]);
+                this.receiveFire([position[0] - 1, position[1] + 1]);
+                this.receiveFire([position[0] - 1, position[1] - 1]);
+            }
         }
         let x = DOMM.createDOM('div', `gameboard-x ${xClass}`);
         DOMM.addChild(this.cells[index].DOMElement, x);
 
-        console.log(report);
         return report;
     }
     isGameOver() {
-        if(this.destroyed >= 10){
-            console.log('GAME OVER');
-        }
+        return this.destroyed >= 10;
     }
 }

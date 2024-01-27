@@ -16,3 +16,37 @@
     font-size: 2em;
     text-align: center;
 }
+
+.popup-window{
+    position: absolute;
+    z-index: 7;
+    left: 50%;
+    transform: translateX(-50%);
+
+    color: white;
+    font-size: 1em;
+
+    background-color: var(--main-color);
+    
+    padding: 10px;
+
+    animation-name: popup-show;
+    animation-duration: 1.2s;
+    animation-iteration-count: 2;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+@keyframes popup-show {
+    0%{
+        opacity: 0;
+        top: -100px
+    }
+    70%{
+        opacity: 1;
+        top: 180px;
+    }
+    100%{
+        opacity: 1;
+        top: 180px;
+    }
+}

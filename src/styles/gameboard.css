@@ -40,8 +40,9 @@
 
 .gameboard-x{
     pointer-events: none;
-    width: 35px;
-    height: 35px;
+    width: 19px;
+    height: 19px;
+    margin: 8px;
     position: absolute;
     z-index: 5;
     background-image: url('../../icons/x_black.png');

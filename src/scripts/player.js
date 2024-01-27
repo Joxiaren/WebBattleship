@@ -10,4 +10,7 @@ export default class Player{
     setDOMElement(){
         if(this.DOMElement !== undefined) return;
     }
+    toString(){
+        return `${this.playerType}: ${this.name}`;
+    }
 }

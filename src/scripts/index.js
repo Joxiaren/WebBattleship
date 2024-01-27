@@ -26,10 +26,9 @@ DOMM.addChild(main, footer.DOMElement);
 DOMM.addToBody(main);
 
 pageContainer.initPages();
+pageContainer.setPage(0);
 
-
-let hardcodedPlayer1 = new Player('Joxi', 'Human');
-let hardcodedPlayer2 = new Player('Poxi', 'AIEasy');
-pageContainer.pages[1].setPlayers([hardcodedPlayer1, hardcodedPlayer2]);
-pageContainer.pages[2].setPlayers([hardcodedPlayer1, hardcodedPlayer2]);
-pageContainer.setPage(1);
+// let hardcodedPlayer1 = new Player('Joxi', 'Human');
+// let hardcodedPlayer2 = new Player('Poxi', 'AIEasy');
+// pageContainer.setPlayers(hardcodedPlayer1, hardcodedPlayer2);
+// pageContainer.setPage(1);

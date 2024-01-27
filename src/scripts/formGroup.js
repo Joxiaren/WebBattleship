@@ -74,4 +74,7 @@ export class RadioGroup{
             DOMM.addChild(this.DOMElement, this.labelElements[j]);
         }
     }
+    disableElement(i){
+        DOMM.DOMList[this.radioElements[i]].disabled = true;
+    }
 }

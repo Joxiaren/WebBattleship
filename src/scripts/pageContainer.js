@@ -17,34 +17,53 @@ export default class PageContainer{
         this.pages = [];
         this.currentPage = undefined;
         
+        this.player1 = undefined;
+        this.player2 = undefined;
+
         this.gameboard1 = undefined;
         this.gameboard2 = undefined;
 
         this.DOMElement = undefined;
     }
+    setDOMElement(){
+        if(this.DOMElement !== undefined) return;
+        this.DOMElement = DOMM.createDOM('div', 'page-container');
+    }
      initPages(){
         this.pages = [];
         this.pages.push(new PlayerSetup(this.playerSetupContinueFunction.bind(this)));
         this.pages.push(new GameboardSetupPage(this.gameboardSetupContinueFunction.bind(this)));
-        this.pages.push(new GamePage());
+        this.pages.push(new GamePage(this.rematch.bind(this), this.restartGame.bind(this)));
     }
     playerSetupContinueFunction(player1Name, player2Name, player2Type){
-        this.pages[1].setPlayers([new Player(player1Name, 'Human'), new Player(player2Name, player2Type)]);
-        this.pages[2].setPlayers([new Player(player1Name, 'Human'), new Player(player2Name, player2Type)]); // change to player type;
+        this.player1 = new Player(player1Name, 'Human');
+        this.player2 = new Player(player2Name, player2Type);
+        this.setPlayers(this.player1, this.player2);
         this.setPage(1);
     }
     gameboardSetupContinueFunction(gameboards){
         this.pages[2].setGameboards(gameboards);
         this.setPage(2);
     }
+    rematch(){
+        this.initPages();
+        this.setPlayers(this.player2, this.player1);
+        this.setPage(1);
+    }
+    restartGame(){
+        this.initPages();
+        this.setPage(0);
+    }
+    setPlayers(player1, player2){
+        this.player1 = player1;
+        this.player2 = player2;
+        this.pages[1].setPlayers([player1, player2]);
+        this.pages[2].setPlayers([player1, player2]);
+    }
     setPage(pageNumber){
         this.currentPage = this.pages[pageNumber];
         this.setDOMElement();
         this.updatePage();
-    }
-    setDOMElement(){
-        if(this.DOMElement !== undefined) return;
-        this.DOMElement = DOMM.createDOM('div', 'page-container');
     }
     updatePage(){
         if(this.currentPage !== undefined) {

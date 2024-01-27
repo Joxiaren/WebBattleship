@@ -1,6 +1,5 @@
 .ship{
-    pointer-events: none;
-    position: absolute;
+    position: relative;
     display: flex;
     /* border: 1px solid blue; */
     background-color: var(--ship-color);
@@ -10,7 +9,6 @@
 }
 
 .ship-part{
-    pointer-events: none;
     position: absolute;
     width: 35px;
     height: 35px;

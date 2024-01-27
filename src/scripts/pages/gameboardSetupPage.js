@@ -54,7 +54,7 @@ export default class GameboardSetupPage{
         DOMM.removeAllChildren(this.DOMElement);
         this.gameboardSetup.DOMElement = undefined;
         if(this.i === 2){
-            //delete this.gameboardSetup
+            delete this.gameboardSetup
             this.cf(this.gameboards);
         }
         else{
@@ -163,14 +163,15 @@ class GameboardSetup{
         if(!this.movableShip) return;
         if(this.selectedCell && this.setupableGameboard.validPlace(this.movableShip, this.selectedCell)){
             this.setupableGameboard.placeShip(this.movableShip, this.selectedCell);
+            DOMM.setStyle(this.movableShip.DOMElement, 'position', 'absolute');
         }
         else{
             DOMM.addChild(this.shipContainer, this.movableShip.DOMElement);
             this.setupableGameboard.removeShip(this.movableShip);
+            DOMM.setStyle(this.movableShip.DOMElement, 'position', 'relative');
         }
-        DOMM.setStyle(this.movableShip.DOMElement, 'top', `0px`);
-        DOMM.setStyle(this.movableShip.DOMElement, 'left', `0px`);
-        DOMM.setStyle(this.movableShip.DOMElement, 'position', 'relative');
+        DOMM.setStyle(this.movableShip.DOMElement, 'top', ``);
+        DOMM.setStyle(this.movableShip.DOMElement, 'left', ``);
         DOMM.setStyle(this.movableShip.DOMElement, 'pointerEvents', 'auto');
         this.setMovableShip(null, 0, 0);
         this.setupableGameboard.setMovableShip(null);

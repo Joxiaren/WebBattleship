@@ -60,6 +60,7 @@ export default class DOMManager{
         this.DOMList[id].addEventListener(`${event}`, f, capture);
     }
     removeChild(idParent, idChild, del=true){
+        if(!this.DOMList[idParent].contains(this.DOMList[idChild])) return;
         this.DOMList[idParent].removeChild(this.DOMList[idChild]);
         if(del) this.removeDOM(idChild);
     }

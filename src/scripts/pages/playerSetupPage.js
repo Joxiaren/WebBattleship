@@ -35,8 +35,9 @@ export default class PlayerSetup{
         this.player2SelectLabel = DOMM.createDOM('div', 'player-setup-select-label');
         DOMM.setTextContent(this.player2SelectLabel, "Select Player2 Type:");
 
-        this.player2SelectGroup = new RadioGroup('player2Select', ['Human', 'AIEasy', 'AIHard'], ['Human', 'AIEasy', 'AIHard']);
+        this.player2SelectGroup = new RadioGroup('player2Select', ['Human', 'AIEasy', 'AIHard (WIP)'], ['Human', 'AIEasy', 'AIHard']);
         this.player2SelectGroup.setDOMElement();
+        this.player2SelectGroup.disableElement(2);
 
         this.continueButton = DOMM.createDOM('div', 'player-setup-continue')
         DOMM.setTextContent(this.continueButton, 'Continue');
@@ -52,7 +53,11 @@ export default class PlayerSetup{
     }
     setDOMEvents(){
         DOMM.addEvent(this.continueButton, 'click', () =>{
-            this.continueFunction(this.player1NameGroup.value, this.player2NameGroup.value, this.player2SelectGroup.selectedValue);
+            if(!this.player1NameGroup.value || !this.player2NameGroup.value || !this.player2SelectGroup.selectedValue){
+                alert("Please enter all the fields");
+                return;
+            }
+            this.continueFunction(this.player1NameGroup.value, this.player2NameGroup.value, this.player2SelectGroup.selectedValue);            
         });
     }
 }
