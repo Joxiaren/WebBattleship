@@ -86,7 +86,7 @@ class GameboardSetup{
     setDOMElement(){
         let AI = false;
         this.setupableGameboard.setDOMElement(this.cellCB.bind(this));
-        if(this.playerType !== 'Human' || true){ //TEMP FOR TESTING
+        if(this.playerType !== 'Human'){
             shuffleArray(this.shipSet.ships, 3);
             this.shipSet.ships.forEach((ship) => this.setupableGameboard.randomPlace(ship));
             AI = true;
