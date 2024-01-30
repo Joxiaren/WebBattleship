@@ -153,19 +153,15 @@ export default class GamePage{
             report = await this.handleTurn();
             if(report === hitReport.Miss){
                 this.popUp(`Player ${this.players[(this.currentTurn + 1) % 2].name} missed`, popupTime);
-                console.log(`Player ${this.players[(this.currentTurn + 1) % 2].name} missed`);
             }
             else if(report === hitReport.Hit){
                 this.popUp(`Player ${this.players[this.currentTurn].name} hit a ship`, popupTime);
-                console.log(`Player ${this.players[this.currentTurn].name} hit a ship`);
             }
             else if(report === hitReport.Sunk){
                 this.popUp(`Player ${this.players[this.currentTurn].name} sunk a ship`, popupTime);
-                console.log(`Player ${this.players[this.currentTurn].name} sunk a ship`);
             }
             else if(report === hitReport.Won){
                 this.popUp(`Player ${this.players[this.currentTurn].name} has won!!!`, popupTime);
-                console.log(`Player ${this.players[this.currentTurn].name} has won!!!`);
                 break;
             }
         }

@@ -67,7 +67,6 @@ export default class PageContainer{
     }
     updatePage(){
         if(this.currentPage !== undefined) {
-            console.log("updating page");
             DOMM.removeAllChildren(this.DOMElement);
             this.currentPage.setDOMElement();
             DOMM.addChild(this.DOMElement, this.currentPage.DOMElement)

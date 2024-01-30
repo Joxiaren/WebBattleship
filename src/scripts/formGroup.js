@@ -24,7 +24,6 @@ export default class FormGroup{
         DOMM.setAttribute(this.inputElement, 'value', this.value);
         DOMM.addEvent(this.inputElement, 'input', function(e){
             this.value = e.target.value;
-            console.log(`Value changed to: ${this.value}`);
         }.bind(this));
         
         DOMM.addChild(this.DOMElement, this.labelElement);
@@ -75,7 +74,6 @@ export class RadioGroup{
                 if(this.selectedValue !== e.target.value){
                     this.selectedValue = e.target.value;
                 }
-                console.log(this.selectedValue);
             }.bind(this))
             DOMM.addChild(this.radioGroupElements[j], this.radioElements[j]);
             DOMM.addChild(this.radioGroupElements[j], this.labelElements[j]);
