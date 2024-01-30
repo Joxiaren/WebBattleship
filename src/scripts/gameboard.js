@@ -231,6 +231,7 @@ export default class Gameboard {
         if(this.shipCells[index]) {
             report = hitReport.Hit;
             let ship = this.ships[this.shipCells[index]];
+            delete this.shipCells[index]
             ship.hit();
             xClass = 'hit';
 

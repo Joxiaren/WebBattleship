@@ -24,14 +24,7 @@ export default class GamePage{
     }
     setPlayers(players){
         this.players = players;
-        if(players[0].playerType === 'Human' && players[1].playerType === 'Human'){
-            console.log('PVP mode');
-            this.pvp = true;
-        } 
-        else{
-            console.log('PVE mode');
-            this.pvp = false;
-        }   
+        this.pvp = players[0].playerType === 'Human' && players[1].playerType === 'Human';
     }
     setGameboards(gameboards){
         this.gameboards = gameboards;

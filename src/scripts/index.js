@@ -28,7 +28,7 @@ DOMM.addToBody(main);
 pageContainer.initPages();
 pageContainer.setPage(0);
 
-// let hardcodedPlayer1 = new Player('Joxi', 'Human');
+// let hardcodedPlayer1 = new Player('Joxi', 'AIHard');
 // let hardcodedPlayer2 = new Player('Poxi', 'AIEasy');
 // pageContainer.setPlayers(hardcodedPlayer1, hardcodedPlayer2);
 // pageContainer.setPage(1);

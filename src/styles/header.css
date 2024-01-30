@@ -8,3 +8,9 @@ header{
     font-size: 3em;
     user-select: none;
 }
+
+@media only screen and (max-width: 600px) {
+    header{
+        font-size: 2em;
+    }
+}

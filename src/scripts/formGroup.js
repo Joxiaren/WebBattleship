@@ -31,12 +31,16 @@ export default class FormGroup{
         DOMM.addChild(this.DOMElement, this.inputElement);
     }
     setClassNameLabel(className){
-        if(this.labelElement == undefined) return;
+        if(!this.labelElement) return;
         DOMM.addClass(this.labelElement, className);
     }
     setClassNameInput(className){
-        if(this.inputElement == undefined) return;
+        if(!this.inputElement) return;
         DOMM.addClass(this.inputElement, className);
+    }
+    setMaxLength(length){
+        if(!this.inputElement) return;
+        DOMM.setAttribute(this.inputElement, 'maxlength', `${length}`);
     }
 }   
 
@@ -47,6 +51,7 @@ export class RadioGroup{
         this.name = name;
         this.values = values;
         this.selectedValue = undefined;
+        this.radioGroupElements = [];
         this.labelElements = [];
         this.radioElements = [];
     }
@@ -54,8 +59,10 @@ export class RadioGroup{
         if(this.labels.length != this.values.length) return;
 
         this.DOMElement = DOMM.createDOM('div', 'radio-group');
-
+        
         for(let j = 0; j < this.labels.length; j++){
+
+            this.radioGroupElements.push(DOMM.createDOM('div', 'radio-group-elements'));
             this.labelElements.push(DOMM.createDOM('label'));
             DOMM.setAttribute(this.labelElements[j], 'for', `${this.name}${j}`);
             DOMM.setTextContent(this.labelElements[j], this.labels[j]);
@@ -70,8 +77,9 @@ export class RadioGroup{
                 }
                 console.log(this.selectedValue);
             }.bind(this))
-            DOMM.addChild(this.DOMElement, this.radioElements[j]);
-            DOMM.addChild(this.DOMElement, this.labelElements[j]);
+            DOMM.addChild(this.radioGroupElements[j], this.radioElements[j]);
+            DOMM.addChild(this.radioGroupElements[j], this.labelElements[j]);
+            DOMM.addChild(this.DOMElement, this.radioGroupElements[j]);
         }
     }
     disableElement(i){

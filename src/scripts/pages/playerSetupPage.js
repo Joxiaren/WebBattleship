@@ -26,18 +26,19 @@ export default class PlayerSetup{
         this.player1NameGroup.setDOMElement();
         this.player1NameGroup.setClassNameLabel('player-setup-label');
         this.player1NameGroup.setClassNameInput('player-setup-input-name');
+        this.player1NameGroup.setMaxLength(16);
 
         this.player2NameGroup = new FormGroup('Enter Player2 Name:', 'text', 'player2-label', '');
         this.player2NameGroup.setDOMElement();
         this.player2NameGroup.setClassNameLabel('player-setup-label');
         this.player2NameGroup.setClassNameInput('player-setup-input-name');
-
+        this.player2NameGroup.setMaxLength(16);
+        
         this.player2SelectLabel = DOMM.createDOM('div', 'player-setup-select-label');
         DOMM.setTextContent(this.player2SelectLabel, "Select Player2 Type:");
 
-        this.player2SelectGroup = new RadioGroup('player2Select', ['Human', 'AIEasy', 'AIHard (WIP)'], ['Human', 'AIEasy', 'AIHard']);
+        this.player2SelectGroup = new RadioGroup('player2Select', ['Human', 'AIEasy', 'AIHard'], ['Human', 'AIEasy', 'AIHard']);
         this.player2SelectGroup.setDOMElement();
-        this.player2SelectGroup.disableElement(2);
 
         this.continueButton = DOMM.createDOM('div', 'player-setup-continue')
         DOMM.setTextContent(this.continueButton, 'Continue');
