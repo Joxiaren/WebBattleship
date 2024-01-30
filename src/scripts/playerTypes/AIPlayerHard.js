@@ -43,7 +43,6 @@ export default class AIPlayerHard{
             let chance = Math.random() * 101;
             let cellFire;
             if(chance < this.cheatPercentage){
-                console.log('we do a little cheating');
                 let shipCells = Object.keys(gameboard.shipCells);
                 shuffleArray(shipCells, 3);
                 cellFire = shipCells[0];
@@ -88,8 +87,6 @@ export default class AIPlayerHard{
                 else if(this.lastDirection == orientation.West) firePosition[1] -= 1;
 
                 index = firePosition[0] * 10 + firePosition[1];
-                
-                console.log(`deliberating firing: ${firePosition}, also known as ${index}`);
 
                 if(gameboard.availableCells.has(index) && (firePosition[0] >= 0 || firePosition[0] < 10 || firePosition[1] >= 0 || firePosition[1] < 10)) break;
                 else{
