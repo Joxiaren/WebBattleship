@@ -78,6 +78,7 @@ class GameboardSetup{
         this.selectedCell = null;
 
         this.DOMElement = undefined;
+        this.visualContainer = undefined;
         this.shipContainer = undefined;
         this.playerNameLabel = undefined;
         this.continueButton = undefined;
@@ -93,7 +94,8 @@ class GameboardSetup{
         }
         if(this.DOMElement !== undefined) return;
         this.DOMElement = DOMM.createDOM('div', 'gameboard-setup');
-        
+        this.visualContainer = DOMM.createDOM('div', 'gameboard-visual');
+
         this.shipContainer = DOMM.createDOM('div', 'gameboard-ship-container');
         this.shipSet.setDOMElement(this.setMovableShip.bind(this));
         this.shipSet.ships.forEach(ship =>{
@@ -103,8 +105,9 @@ class GameboardSetup{
         this.continueButton = DOMM.createDOM('div', 'gameboard-setup-continue')
         DOMM.setTextContent(this.continueButton, 'Continue');
 
-        DOMM.addChild(this.DOMElement, this.shipContainer);
-        DOMM.addChild(this.DOMElement, this.setupableGameboard.DOMElement);
+        DOMM.addChild(this.visualContainer, this.shipContainer);
+        DOMM.addChild(this.visualContainer, this.setupableGameboard.DOMElement);
+        DOMM.addChild(this.DOMElement, this.visualContainer);
         DOMM.addChild(this.DOMElement, this.continueButton);
 
         this.setDOMEvents();
